@@ -7,8 +7,20 @@ package ru.kunakbaev.databaseeditormaven.frame;
 import ru.kunakbaev.databaseeditormaven.DataBaseEditorMaven;
 import ru.kunakbaev.databaseeditormaven.configuration.PosgresConection;
 import ru.kunakbaev.databaseeditormaven.controller.MainFrameController;
+import ru.kunakbaev.databaseeditormaven.model.Column;
+import ru.kunakbaev.databaseeditormaven.model.Table;
 import ru.kunakbaev.databaseeditormaven.service.DatabaseService;
 import ru.kunakbaev.databaseeditormaven.service.ui.TreeService;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 /**
  *
@@ -23,6 +35,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         initComponents();
 
+        treePopupMenu.add(createTableMenuItem);
+        treePopupMenu.add(editTableMenuItem);
+        treePopupMenu.add(deleteTableMenuItem);
     }
 
     /**
@@ -34,19 +49,207 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        treePopupMenu = new javax.swing.JPopupMenu();
+        createTableMenuItem = new javax.swing.JMenuItem();
+        editTableMenuItem = new javax.swing.JMenuItem();
+        deleteTableMenuItem = new javax.swing.JMenuItem();
         dbTreeScrollPanel = new javax.swing.JScrollPane();
         dbTree = new javax.swing.JTree();
+        editPanel = new javax.swing.JPanel();
+        mainPanel = new javax.swing.JPanel();
+        addTablePanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        columnsTable = new javax.swing.JTable();
+        tableNameField = new javax.swing.JTextField();
+        cancelButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
+        saveColumnButton = new javax.swing.JButton();
+        deleteColumnButton = new javax.swing.JButton();
+        pkColumnComboBox = new javax.swing.JComboBox<>();
+        TableNameLabel = new javax.swing.JLabel();
+        pkColumnLabel = new javax.swing.JLabel();
         updateTreeButton = new javax.swing.JButton();
         uppMenuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+
+        treePopupMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                treePopupMenuMouseExited(evt);
+            }
+        });
+
+        createTableMenuItem.setText("Create new table");
+        createTableMenuItem.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        createTableMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createTableMenuItemActionPerformed(evt);
+            }
+        });
+
+        editTableMenuItem.setText("Edit table");
+        editTableMenuItem.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        editTableMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editTableMenuItemActionPerformed(evt);
+            }
+        });
+
+        deleteTableMenuItem.setText("Delete table");
+        deleteTableMenuItem.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        deleteTableMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteTableMenuItemActionPerformed(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 400));
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         dbTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        dbTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                dbTreeMouseReleased(evt);
+            }
+        });
         dbTreeScrollPanel.setViewportView(dbTree);
+
+        editPanel.setBackground(new java.awt.Color(255, 255, 255));
+        editPanel.setLayout(new java.awt.CardLayout());
+
+        mainPanel.setBackground(new java.awt.Color(255, 51, 51));
+
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 464, Short.MAX_VALUE)
+        );
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 340, Short.MAX_VALUE)
+        );
+
+        editPanel.add(mainPanel, "MAIN_PANEL");
+
+        addTablePanel.setBackground(new java.awt.Color(153, 255, 51));
+        addTablePanel.setName(""); // NOI18N
+
+        columnsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"dsa", "v",  new Integer(233),  new Boolean(true)},
+                {"asdasd", "i", null, null},
+                {"asdasd", "t", null, null}
+            },
+            new String [] {
+                "Name", "Type", "Size", "Nullable"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        columnsTable.setColumnSelectionAllowed(true);
+        columnsTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(columnsTable);
+        columnsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (columnsTable.getColumnModel().getColumnCount() > 0) {
+            columnsTable.getColumnModel().getColumn(0).setResizable(false);
+            columnsTable.getColumnModel().getColumn(1).setResizable(false);
+            columnsTable.getColumnModel().getColumn(2).setResizable(false);
+            columnsTable.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        tableNameField.setText("Name");
+        tableNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tableNameFieldActionPerformed(evt);
+            }
+        });
+
+        cancelButton.setText("Back");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        saveButton.setText("Save table");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+
+        saveColumnButton.setText("Add column");
+
+        deleteColumnButton.setText("Delete column");
+        deleteColumnButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteColumnButtonActionPerformed(evt);
+            }
+        });
+
+        pkColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        TableNameLabel.setText("Table name");
+
+        pkColumnLabel.setText("PK column");
+
+        javax.swing.GroupLayout addTablePanelLayout = new javax.swing.GroupLayout(addTablePanel);
+        addTablePanel.setLayout(addTablePanelLayout);
+        addTablePanelLayout.setHorizontalGroup(
+            addTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addTablePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(addTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(addTablePanelLayout.createSequentialGroup()
+                        .addComponent(saveColumnButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(deleteColumnButton))
+                    .addGroup(addTablePanelLayout.createSequentialGroup()
+                        .addGroup(addTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(TableNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pkColumnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(addTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pkColumnComboBox, 0, 129, Short.MAX_VALUE)
+                            .addComponent(tableNameField))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cancelButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton)))
+                .addContainerGap())
+        );
+        addTablePanelLayout.setVerticalGroup(
+            addTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addTablePanelLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(addTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tableNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelButton)
+                    .addComponent(saveButton)
+                    .addComponent(TableNameLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(addTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pkColumnComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pkColumnLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGroup(addTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveColumnButton)
+                    .addComponent(deleteColumnButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        editPanel.add(addTablePanel, "ADD_TABLE");
 
         updateTreeButton.setText("Update tree");
         updateTreeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -71,34 +274,154 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(dbTreeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(updateTreeButton)
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dbTreeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(updateTreeButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(editPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(editPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(updateTreeButton)
-                        .addGap(0, 292, Short.MAX_VALUE))
-                    .addComponent(dbTreeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dbTreeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void treePopupMenuMouseExited(MouseEvent evt) {
+    }
+
     private void updateTreeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateTreeButtonActionPerformed
         dbTree.setModel(mainFrameController.getTreeModel());
         dbTree.updateUI();
     }//GEN-LAST:event_updateTreeButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void tableNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableNameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tableNameFieldActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void deleteColumnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteColumnButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteColumnButtonActionPerformed
+
+    private void createTableMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTableMenuItemActionPerformed
+        showPanel("ADD_TABLE");
+    }//GEN-LAST:event_createTableMenuItemActionPerformed
+
+    private void editTableMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editTableMenuItemActionPerformed
+        var node = (DefaultMutableTreeNode) dbTree.getSelectionPath().getLastPathComponent();
+        int level = getNodeLevel(node);
+        Table table;
+        switch (level) {
+            case 1:
+                table = mainFrameController.getTree(node.getUserObject().toString());
+                break;
+            case 2:
+                table = mainFrameController.getTree(node.getParent().toString());
+                break;
+            case -1:
+                return;
+            default:
+                return;
+        }
+        setTableColumns(table);
+        columnsTable.updateUI();
+    }//GEN-LAST:event_editTableMenuItemActionPerformed
+
+    private void deleteTableMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteTableMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteTableMenuItemActionPerformed
+
+    private void dbTreeMouseReleased(java.awt.event.MouseEvent evt) {                                     
+        if (evt.isPopupTrigger()) {
+            TreePath path = dbTree.getPathForLocation(evt.getX(), evt.getY());
+            if (path == null) return;
+
+            dbTree.setSelectionPath(path);
+
+            var node = (DefaultMutableTreeNode) dbTree.getSelectionPath().getLastPathComponent();
+            int level = getNodeLevel(node);
+
+            Arrays.stream(treePopupMenu.getComponents())
+                    .filter(comp -> comp != createTableMenuItem)
+                    .forEach(comp -> comp.setVisible(false));
+
+            switch (level) {
+                case 0:
+                    break;
+                case 1:
+                    Arrays.stream(treePopupMenu.getComponents())
+                            .filter(comp -> comp == editTableMenuItem || comp == deleteTableMenuItem)
+                            .forEach(comp -> comp.setVisible(true));
+                    break;
+                case 2:
+                    Arrays.stream(treePopupMenu.getComponents())
+                            .filter(comp -> comp==editTableMenuItem)
+                            .forEach(comp -> comp.setVisible(true));
+//                    Table ts = mainFrameController.getTree(node.getParent().toString());
+                    break;
+                case -1:
+                    return;
+            }
+
+            treePopupMenu.show(dbTree, evt.getX(), evt.getY());
+            treePopupMenu.setVisible(true);
+        }
+    }
+
+    private void showPanel(String cardName) {
+        CardLayout layout = (CardLayout) editPanel.getLayout();
+        layout.show(editPanel, cardName);
+    }
+
+    private static int getNodeLevel(DefaultMutableTreeNode node) {
+        if (node == null) return -1;
+
+        int level = 0;
+        TreeNode currentNode = node;
+
+        while (currentNode.getParent() != null) {
+            level++;
+            currentNode = currentNode.getParent();
+        }
+
+        return level;
+    }
+
+    private void setTableColumns(Table table) {
+        DefaultTableModel columnsModel = (DefaultTableModel) columnsTable.getModel();
+        columnsModel.setRowCount(0);
+
+        for (Column column : table.getColumns()) {
+            Object[] row = new Object[]{
+                    column.getName(),
+                    column.getType(),
+                    column.getSize(),
+                    column.isNullable()
+            };
+            columnsModel.addRow(row);
+        }
+
+        columnsTable.setModel(columnsModel);
+    }
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -127,7 +450,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                     DatabaseService databaseService = new DatabaseService(conn);
                     TreeService treeService = new TreeService(databaseService);
-                    MainFrameController mainFrameController = new MainFrameController(treeService);
+                    MainFrameController mainFrameController = new MainFrameController(treeService, databaseService);
 
                     new MainFrame(mainFrameController).setVisible(true);
 
@@ -140,10 +463,27 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel TableNameLabel;
+    private javax.swing.JPanel addTablePanel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JTable columnsTable;
+    private javax.swing.JMenuItem createTableMenuItem;
     private javax.swing.JTree dbTree;
     private javax.swing.JScrollPane dbTreeScrollPanel;
+    private javax.swing.JButton deleteColumnButton;
+    private javax.swing.JMenuItem deleteTableMenuItem;
+    private javax.swing.JPanel editPanel;
+    private javax.swing.JMenuItem editTableMenuItem;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JComboBox<String> pkColumnComboBox;
+    private javax.swing.JLabel pkColumnLabel;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JButton saveColumnButton;
+    private javax.swing.JTextField tableNameField;
+    private javax.swing.JPopupMenu treePopupMenu;
     private javax.swing.JButton updateTreeButton;
     private javax.swing.JMenuBar uppMenuBar;
     // End of variables declaration//GEN-END:variables

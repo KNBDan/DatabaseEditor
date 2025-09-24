@@ -41,7 +41,6 @@ public class DatabaseService {
         ) {
             while (tablesRs.next()) {
                 String tableName = tablesRs.getString("TABLE_NAME");
-
                 Table table = new Table(tableName);
                 table.setColumns(getColumnFromMeta(metaData, tableName));
 
@@ -73,6 +72,16 @@ public class DatabaseService {
         }
 
         return columns;
+    }
+
+    public Table findTable(String name) throws SQLException {
+        var db = getDatabaseFromMeta();
+        for (Table table: db.getTables()) {
+            if (table.getName().equals(name)) {
+                return table;
+            }
+        }
+        return null;
     }
 
 }
