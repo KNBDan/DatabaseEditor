@@ -1,18 +1,16 @@
 package ru.kunakbaev.databaseeditormaven.repository;
 
-import ru.kunakbaev.databaseeditormaven.model.FieldType;
-
 import java.util.List;
 import java.util.Map;
 
 public class PostgresTableRepository implements TableRepository {
     @Override
-    public void createTable(String tableName, Map<String, FieldType> column) {
+    public void createTable(String tableName, Map<String, String> column) {
 
     }
 
     @Override
-    public void addColumn(String tableName, Map<String, FieldType> column) {
+    public void addColumn(String tableName, Map<String, String> column) {
 
     }
 

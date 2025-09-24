@@ -50,6 +50,165 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteTableMenuItemActionPerformed"/>
       </Events>
     </Component>
+    <Container class="javax.swing.JDialog" name="editColumnDialog">
+      <Properties>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[300, 200]"/>
+        </Property>
+        <Property name="modal" type="boolean" value="true"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[300, 200]"/>
+        </Property>
+        <Property name="resizable" type="boolean" value="false"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="cancelEditColumnButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="applyEditColumnButton" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="nameEditColumnLabel" alignment="0" pref="84" max="32767" attributes="0"/>
+                              <Component id="typeEditColumnLabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="nullableEditColumnLabel" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="columnNameEditColumnTextField" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="nullableEditColumnCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="columnTypeEditColumnComboBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="sizeEditColumnLabel" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="sizeEditColumnFormattedTextField" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="columnNameEditColumnTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nameEditColumnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="columnTypeEditColumnComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="typeEditColumnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="sizeEditColumnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="sizeEditColumnFormattedTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="nullableEditColumnCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nullableEditColumnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="58" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="applyEditColumnButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cancelEditColumnButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="applyEditColumnButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Apply"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="applyEditColumnButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="cancelEditColumnButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cancell"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelEditColumnButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="columnNameEditColumnTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="jTextField1"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="columnNameEditColumnTextFieldActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="columnTypeEditColumnComboBox">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="6">
+                <StringItem index="0" value="int4"/>
+                <StringItem index="1" value="int8"/>
+                <StringItem index="2" value="varchar"/>
+                <StringItem index="3" value="bool"/>
+                <StringItem index="4" value="timestamp"/>
+                <StringItem index="5" value="double"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="columnTypeEditColumnComboBoxItemStateChanged"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="nullableEditColumnCheckBox">
+        </Component>
+        <Component class="javax.swing.JLabel" name="nameEditColumnLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Column name"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="typeEditColumnLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Type"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="nullableEditColumnLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Nullable"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="sizeEditColumnLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Size"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="sizeEditColumnFormattedTextField">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="1" type="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sizeEditColumnFormattedTextFieldActionPerformed"/>
+          </Events>
+        </Component>
+      </SubComponents>
+    </Container>
     <Menu class="javax.swing.JMenuBar" name="uppMenuBar">
       <Properties>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -136,7 +295,7 @@
         <Component class="javax.swing.JTree" name="dbTree">
           <Properties>
             <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
-              <TreeModel code=""/>
+              <TreeModel code="Add connection"/>
             </Property>
           </Properties>
           <Events>
@@ -179,7 +338,7 @@
             </DimensionLayout>
           </Layout>
         </Container>
-        <Container class="javax.swing.JPanel" name="addTablePanel">
+        <Container class="javax.swing.JPanel" name="editTablePanel">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="ff" red="99" type="rgb"/>
@@ -188,7 +347,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
-              <CardConstraints cardName="ADD_TABLE"/>
+              <CardConstraints cardName="EDIT_TABLE"/>
             </Constraint>
           </Constraints>
 
@@ -201,6 +360,8 @@
                           <Component id="jScrollPane1" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="saveColumnButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="editColumnButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="deleteColumnButton" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -243,6 +404,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="saveColumnButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="deleteColumnButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="editColumnButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="181" max="-2" attributes="0"/>
@@ -263,22 +425,22 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="4" rowCount="3">
-                        <Column editable="true" title="Name" type="java.lang.String">
+                        <Column editable="false" title="Name" type="java.lang.String">
                           <Data value="dsa"/>
                           <Data value="asdasd"/>
                           <Data value="asdasd"/>
                         </Column>
-                        <Column editable="true" title="Type" type="java.lang.Object">
+                        <Column editable="false" title="Type" type="java.lang.Object">
                           <Data value="v"/>
                           <Data value="i"/>
                           <Data value="t"/>
                         </Column>
-                        <Column editable="true" title="Size" type="java.lang.Integer">
+                        <Column editable="false" title="Size" type="java.lang.Integer">
                           <Data value="233"/>
                           <Data value="null"/>
                           <Data value="null"/>
                         </Column>
-                        <Column editable="true" title="Nullable" type="java.lang.Boolean">
+                        <Column editable="false" title="Nullable" type="java.lang.Boolean">
                           <Data value="true"/>
                           <Data value="null"/>
                           <Data value="null"/>
@@ -286,7 +448,7 @@
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                      <TableColumnModel selectionModel="2">
+                      <TableColumnModel selectionModel="0">
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                           <Title/>
                           <Editor/>
@@ -309,7 +471,6 @@
                         </Column>
                       </TableColumnModel>
                     </Property>
-                    <Property name="columnSelectionAllowed" type="boolean" value="true"/>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                       <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                     </Property>
@@ -378,6 +539,14 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="PK column"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="editColumnButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Edit column"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editColumnButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Table {
     private String name;
-    private Column pkColumn;
+    private String pkColumn;
     private List<Column> columns = new ArrayList<>();
 
     public Table() {}
@@ -30,11 +30,11 @@ public class Table {
         this.columns = columns;
     }
 
-    public Column getPkColumn() {
+    public String getPkColumn() {
         return pkColumn;
     }
 
-    public void setPkColumn(Column pkColumn) {
+    public void setPkColumn(String pkColumn) {
         this.pkColumn = pkColumn;
     }
 }

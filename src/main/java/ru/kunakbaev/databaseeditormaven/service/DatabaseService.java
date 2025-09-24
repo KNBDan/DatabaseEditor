@@ -43,7 +43,11 @@ public class DatabaseService {
                 String tableName = tablesRs.getString("TABLE_NAME");
                 Table table = new Table(tableName);
                 table.setColumns(getColumnFromMeta(metaData, tableName));
-
+                try (ResultSet pkRs = metaData.getPrimaryKeys(null, null, tableName)) {
+                    if (pkRs.next()) {
+                        table.setPkColumn(pkRs.getString("COLUMN_NAME"));
+                    }
+                }
                 tables.add(table);
             }
         }
