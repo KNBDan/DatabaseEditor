@@ -1,8 +1,11 @@
 package ru.kunakbaev.databaseeditormaven.repository;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface TableRepository {
     public void createTable(String tableName, Map<String, String> column);
 
