@@ -1,10 +1,13 @@
 package ru.kunakbaev.databaseeditormaven.service;
 
+import org.springframework.jdbc.support.DatabaseStartupValidator;
 import org.springframework.stereotype.Service;
+import ru.kunakbaev.databaseeditormaven.configuration.PostgresConnection;
 import ru.kunakbaev.databaseeditormaven.model.Column;
 import ru.kunakbaev.databaseeditormaven.model.Database;
 import ru.kunakbaev.databaseeditormaven.model.Table;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -15,16 +18,16 @@ import java.util.List;
 @Service
 public class DatabaseService {
 
-    private final Connection conn;
+    private final PostgresConnection postgresConnection;
 
-    public DatabaseService(Connection conn) {
-        this.conn = conn;
+    public DatabaseService(PostgresConnection postgresConnection) {
+        this.postgresConnection = postgresConnection;
     }
 
     public Database getDatabaseFromMeta() throws SQLException {
-        DatabaseMetaData metaData = conn.getMetaData();
+        DatabaseMetaData metaData = postgresConnection.getConnection().getMetaData();
 
-        Database database = new Database(conn.getCatalog());
+        Database database = new Database(postgresConnection.getConnection().getCatalog());
         database.setTables(getTablesFromMeta(metaData));
 
         return  database;
@@ -41,10 +44,13 @@ public class DatabaseService {
         ) {
             while (tablesRs.next()) {
                 String tableName = tablesRs.getString("TABLE_NAME");
-
                 Table table = new Table(tableName);
                 table.setColumns(getColumnFromMeta(metaData, tableName));
-
+                try (ResultSet pkRs = metaData.getPrimaryKeys(null, null, tableName)) {
+                    if (pkRs.next()) {
+                        table.setPkColumn(pkRs.getString("COLUMN_NAME"));
+                    }
+                }
                 tables.add(table);
             }
         }
@@ -73,6 +79,16 @@ public class DatabaseService {
         }
 
         return columns;
+    }
+
+    public Table findTable(String name) throws SQLException {
+        var db = getDatabaseFromMeta();
+        for (Table table: db.getTables()) {
+            if (table.getName().equals(name)) {
+                return table;
+            }
+        }
+        return null;
     }
 
 }
