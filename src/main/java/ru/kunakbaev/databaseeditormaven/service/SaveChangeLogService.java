@@ -18,7 +18,7 @@ public class SaveChangeLogService {
     public void GetChange(Change change) throws SQLException {
         // update table name
         var tableName = change.getOldTableName();
-        if (change.getNewTableName() != "") {
+        if (change.getNewTableName() != null) {
             postgresTableRepository.updateTableName(change.getOldTableName(), change.getNewTableName());
             tableName = change.getNewTableName();
         }

@@ -362,6 +362,96 @@
         </Component>
       </SubComponents>
     </Container>
+    <Container class="javax.swing.JDialog" name="setConnectionDialog">
+      <Properties>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[400, 200]"/>
+        </Property>
+        <Property name="resizable" type="boolean" value="false"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="tryConnectButton" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="urlLabel" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
+                              <Component id="userLabel" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
+                              <Component id="passLabel" alignment="0" min="-2" pref="65" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="passwordTextField" min="-2" pref="313" max="-2" attributes="0"/>
+                              <Component id="userTextField" min="-2" pref="313" max="-2" attributes="0"/>
+                              <Component id="urlTextField" min="-2" pref="313" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace pref="15" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="urlLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="urlTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="userLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="userTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="passwordTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="passLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="tryConnectButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="tryConnectButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Connect"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tryConnectButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="urlLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="url"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="passLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="password"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="userLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="user"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="urlTextField">
+        </Component>
+        <Component class="javax.swing.JTextField" name="userTextField">
+        </Component>
+        <Component class="javax.swing.JTextField" name="passwordTextField">
+        </Component>
+      </SubComponents>
+    </Container>
     <Menu class="javax.swing.JMenuBar" name="uppMenuBar">
       <Properties>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -369,15 +459,20 @@
         </Property>
       </Properties>
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="connectionMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="File"/>
+            <Property name="text" type="java.lang.String" value="Connection"/>
           </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Edit"/>
-          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="setNewConnectionMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Set new connection"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="setNewConnectionMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>
@@ -469,7 +564,12 @@
         <Container class="javax.swing.JPanel" name="mainPanel">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="33" green="33" red="ff" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
             </Property>
           </Properties>
           <Constraints>
@@ -481,15 +581,90 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="464" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="mainPanel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="340" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="mainPanel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="mainPanel1">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                    <EtchetBorder/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="infoLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="infoP" min="-2" pref="585" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="89" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="infoLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="49" max="32767" attributes="0"/>
+                          <Component id="infoP" min="-2" pref="307" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="infoLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Select any table or create new"/>
+                  </Properties>
+                </Component>
+                <Container class="javax.swing.JScrollPane" name="infoP">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTextArea" name="infoText">
+                      <Properties>
+                        <Property name="editable" type="boolean" value="false"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="f2" green="f3" red="ea" type="rgb"/>
+                        </Property>
+                        <Property name="columns" type="int" value="20"/>
+                        <Property name="rows" type="int" value="5"/>
+                        <Property name="text" type="java.lang.String" value="&#x422;&#x435;&#x441;&#x442;&#x43e;&#x432;&#x43e;&#x435; &#x437;&#x430;&#x434;&#x430;&#x43d;&#x438;&#x435; &#x43d;&#x430; &#x441;&#x43e;&#x437;&#x434;&#x430;&#x43d;&#x438;&#x435;, &#x443;&#x434;&#x430;&#x43b;&#x435;&#x43d;&#x438;&#x435; &#x438; &#x440;&#x435;&#x434;&#x430;&#x43a;&#x442;&#x438;&#x440;&#x43e;&#x432;&#x430;&#x43d;&#x438;&#x435; &#x442;&#x430;&#x431;&#x43b;&#x438;&#x446;. &#xa;&#xa;&#x425;&#x43e;&#x442;&#x435;&#x43b; &#x431;&#x44b; &#x43e;&#x442;&#x43c;&#x435;&#x442;&#x438;&#x442;&#x44c; &#x43d;&#x435;&#x434;&#x43e;&#x440;&#x430;&#x431;&#x43e;&#x442;&#x43a;&#x438; &#x434;&#x430;&#x43d;&#x43d;&#x43e;&#x439; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x44b;:&#xa;- &#x41d;&#x435;&#x43b;&#x44c;&#x437;&#x44f; &#x43c;&#x435;&#x43d;&#x44f;&#x442;&#x44c; &#x437;&#x430;&#x43f;&#x43e;&#x43b;&#x43d;&#x435;&#x43d;&#x43d;&#x44b;&#x435; &#x442;&#x430;&#x431;&#x43b;&#x438;&#x446;&#x44b; (&#x43d;&#x435; &#x43f;&#x440;&#x43e;&#x43f;&#x438;&#x441;&#x44b;&#x432;&#x430;&#x435;&#x442;&#x441;&#x44f; DEFAULT, &#x43f;&#x43e;&#x44d;&#x442;&#x43e;&#x43c;&#x443; &#x432;&#x441;&#x435; &#x43d;&#x43e;&#x432;&#x430;&#x44f; &#xa;&#x43a;&#x43e;&#x43b;&#x43e;&#x43d;&#x43a;&#x430; &#x441;&#x43e;&#x441;&#x442;&#x43e;&#x438;&#x442; &#x438;&#x437; null)&#xa;- &#x415;&#x441;&#x438;&#x43b; &#x432; &#x431;&#x430;&#x437;&#x435; &#x434;&#x430;&#x43d;&#x43d;&#x44b;&#x445; &#x431;&#x43e;&#x43b;&#x44c;&#x448;&#x435; 1 &#x441;&#x445;&#x435;&#x43c;&#x44b;, &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x430; &#x43f;&#x43e;&#x434;&#x442;&#x44f;&#x433;&#x438;&#x432;&#x430;&#x435;&#x442; &#x432;&#x441;&#x435; &#x442;&#x430;&#x431;&#x43b;&#x438;&#x446;&#x44b; &#x438; &#x43d;&#x435; &#x43c;&#x43e;&#x436;&#x435;&#x442; &#xa;&#x43a;&#x43e;&#x440;&#x440;&#x435;&#x43a;&#x442;&#x43d;&#x43e; &#x441; &#x43d;&#x438;&#x43c;&#x438; &#x440;&#x430;&#x431;&#x43e;&#x430;&#x442;&#x44c; (&#x441;&#x43e;&#x445;&#x440;&#x430;&#x43d;&#x435;&#x43d;&#x438;&#x435; &#x432;&#x44b;&#x434;&#x430;&#x435;&#x442; &#x43e;&#x448;&#x438;&#x431;&#x43a;&#x443;). &#x412; &#x43e;&#x441;&#x43d;&#x43e;&#x432;&#x43d;&#x43e;&#x43c; &#x440;&#x430;&#x431;&#x43e;&#x442;&#x430;&#x43b; &#x43d;&#x430; MySQL, &#xa;&#x43f;&#x43e;&#x44d;&#x442;&#x43e;&#x43c;&#x443; &#x437;&#x430;&#x431;&#x44b;&#x43b; &#x43f;&#x440;&#x43e; &#x43e;&#x441;&#x43e;&#x431;&#x435;&#x43d;&#x43d;&#x441;&#x43e;&#x442;&#x44c; &#x441;&#x442;&#x440;&#x443;&#x43a;&#x442;&#x443;&#x440;&#x44b; Postgresql &#xa;&#xa;&#x421;&#x434;&#x435;&#x43b;&#x430;&#x43b; &#x432;&#x44b;&#x431;&#x43e;&#x440; &#x437;&#x430;&#x43a;&#x43e;&#x43d;&#x447;&#x438;&#x442;&#x44c; &#x442;&#x435;&#x441;&#x442;&#x43e;&#x432;&#x43e;&#x435; &#x437;&#x430;&#x434;&#x430;&#x43d;&#x438;&#x435; &#x441; &#x43c;&#x438;&#x43d;&#x438;&#x43c;&#x430;&#x43b;&#x44c;&#x43d;&#x44b;&#x43c;&#x438; &#x438;&#x441;&#x43f;&#x440;&#x430;&#x432;&#x43b;&#x435;&#x43d;&#x438;&#x44f;&#x43c;&#x438; &#x441;&#x43f;&#x435;&#x446;&#x438;&#x444;&#x438;&#x447;&#x43d;&#x44b;&#x445; &#x441;&#x43b;&#x443;&#x447;&#x430;&#x435;&#x432; &#xa;&#x438; &#x441;&#x43e;&#x441;&#x440;&#x435;&#x434;&#x43e;&#x442;&#x43e;&#x447;&#x438;&#x442;&#x44c;&#x441;&#x44f; &#x43d;&#x430; &#x441;&#x440;&#x43e;&#x43a;&#x430;&#x445; &#x440;&#x430;&#x437;&#x440;&#x430;&#x431;&#x43e;&#x442;&#x43a;&#x438; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x44b;. &#x415;&#x441;&#x43b;&#x438; &#x432;&#x430;&#x43c; &#x43f;&#x43e;&#x43d;&#x440;&#x430;&#x432;&#x438;&#x43b;&#x441;&#x44f; &#x442;&#x435;&#x441;&#x442;&#x43e;&#x432;&#x44b;&#x439;&#xa;&#x432;&#x430;&#x440;&#x438;&#x430;&#x43d;&#x442;, &#x43d;&#x43e; &#x432;&#x44b; &#x445;&#x43e;&#x442;&#x438;&#x442;&#x435; &#x443;&#x432;&#x438;&#x434;&#x435;&#x442;&#x44c; &#x43f;&#x43e;&#x43b;&#x43d;&#x43e;&#x446;&#x435;&#x43d;&#x43d;&#x43e; &#x440;&#x430;&#x431;&#x43e;&#x442;&#x430;&#x44e;&#x449;&#x435;&#x435; &#x43f;&#x440;&#x438;&#x43b;&#x43e;&#x436;&#x435;&#x43d;&#x438;&#x435; &#x431;&#x435;&#x437; &#x43e;&#x43f;&#x438;&#x441;&#x430;&#x43d;&#x43d;&#x44b;&#x445; &#x432;&#x44b;&#x448;&#x435;&#xa;&#x43e;&#x448;&#x438;&#x431;&#x43e;&#x43a;, &#x442;&#x43e; &#x44f; &#x433;&#x43e;&#x442;&#x43e;&#x432; &#x434;&#x43e;&#x43e;&#x440;&#x430;&#x431;&#x43e;&#x430;&#x442;&#x44c; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x443; &#x434;&#x43e; &#x43a;&#x43e;&#x43d;&#x446;&#x430;.&#xa;&#x421;&#x43f;&#x430;&#x441;&#x438;&#x431;&#x43e; &#x437;&#x430; &#x432;&#x43d;&#x438;&#x43c;&#x430;&#x43d;&#x438;&#x435;!"/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="editTablePanel">
           <Properties>
@@ -553,7 +728,7 @@
                           <Component id="pkColumnComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="pkColumnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="43" max="32767" attributes="0"/>
+                      <EmptySpace pref="95" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="createColumnButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="deleteColumnButton" alignment="3" min="-2" max="-2" attributes="0"/>

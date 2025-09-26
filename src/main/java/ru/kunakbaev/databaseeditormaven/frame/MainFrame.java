@@ -14,6 +14,7 @@ import ru.kunakbaev.databaseeditormaven.model.Column;
 import ru.kunakbaev.databaseeditormaven.model.Table;
 import ru.kunakbaev.databaseeditormaven.repository.PostgresTableRepository;
 import ru.kunakbaev.databaseeditormaven.service.ChangeService;
+import ru.kunakbaev.databaseeditormaven.service.ConnectionService;
 import ru.kunakbaev.databaseeditormaven.service.DatabaseService;
 import ru.kunakbaev.databaseeditormaven.service.SaveChangeLogService;
 import ru.kunakbaev.databaseeditormaven.service.ui.TreeService;
@@ -81,10 +82,22 @@ public class MainFrame extends javax.swing.JFrame {
         nullableCreateColumnLabel = new javax.swing.JLabel();
         sizeCreateColumnLabel = new javax.swing.JLabel();
         sizeCreateColumnFormattedTextField = new javax.swing.JFormattedTextField();
+        setConnectionDialog = new javax.swing.JDialog();
+        tryConnectButton = new javax.swing.JButton();
+        urlLabel = new javax.swing.JLabel();
+        passLabel = new javax.swing.JLabel();
+        userLabel = new javax.swing.JLabel();
+        urlTextField = new javax.swing.JTextField();
+        userTextField = new javax.swing.JTextField();
+        passwordTextField = new javax.swing.JTextField();
         dbTreeScrollPanel = new javax.swing.JScrollPane();
         dbTree = new javax.swing.JTree();
         editPanel = new javax.swing.JPanel();
         mainPanel = new javax.swing.JPanel();
+        mainPanel1 = new javax.swing.JPanel();
+        infoLabel = new javax.swing.JLabel();
+        infoP = new javax.swing.JScrollPane();
+        infoText = new javax.swing.JTextArea();
         editTablePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         columnsTable = new javax.swing.JTable();
@@ -99,8 +112,8 @@ public class MainFrame extends javax.swing.JFrame {
         editColumnButton = new javax.swing.JButton();
         updateTreeButton = new javax.swing.JButton();
         uppMenuBar = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        connectionMenu = new javax.swing.JMenu();
+        setNewConnectionMenuItem = new javax.swing.JMenuItem();
 
         treePopupMenu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -334,6 +347,62 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        setConnectionDialog.setMinimumSize(new java.awt.Dimension(400, 200));
+        setConnectionDialog.setResizable(false);
+
+        tryConnectButton.setText("Connect");
+        tryConnectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tryConnectButtonActionPerformed(evt);
+            }
+        });
+
+        urlLabel.setText("url");
+
+        passLabel.setText("password");
+
+        userLabel.setText("user");
+
+        javax.swing.GroupLayout setConnectionDialogLayout = new javax.swing.GroupLayout(setConnectionDialog.getContentPane());
+        setConnectionDialog.getContentPane().setLayout(setConnectionDialogLayout);
+        setConnectionDialogLayout.setHorizontalGroup(
+            setConnectionDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(setConnectionDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(setConnectionDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tryConnectButton)
+                    .addGroup(setConnectionDialogLayout.createSequentialGroup()
+                        .addGroup(setConnectionDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(urlLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(1, 1, 1)
+                        .addGroup(setConnectionDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(userTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(urlTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+        setConnectionDialogLayout.setVerticalGroup(
+            setConnectionDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, setConnectionDialogLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(setConnectionDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(urlLabel)
+                    .addComponent(urlTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(setConnectionDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userLabel)
+                    .addComponent(userTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addGroup(setConnectionDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(passLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tryConnectButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 400));
 
@@ -349,17 +418,57 @@ public class MainFrame extends javax.swing.JFrame {
         editPanel.setBackground(new java.awt.Color(255, 255, 255));
         editPanel.setLayout(new java.awt.CardLayout());
 
-        mainPanel.setBackground(new java.awt.Color(255, 51, 51));
+        mainPanel.setBackground(new java.awt.Color(255, 255, 255));
+        mainPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        mainPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        mainPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        infoLabel.setText("Select any table or create new");
+
+        infoText.setEditable(false);
+        infoText.setBackground(new java.awt.Color(234, 243, 242));
+        infoText.setColumns(20);
+        infoText.setRows(5);
+        infoText.setText("Тестовое задание на создание, удаление и редактирование таблиц. \n\nХотел бы отметить недоработки данной программы:\n- Нельзя менять заполненные таблицы (не прописывается DEFAULT, поэтому все новая \nколонка состоит из null)\n- Есил в базе данных больше 1 схемы, программа подтягивает все таблицы и не может \nкорректно с ними рабоать (сохранение выдает ошибку). В основном работал на MySQL, \nпоэтому забыл про особеннсоть структуры Postgresql \n\nСделал выбор закончить тестовое задание с минимальными исправлениями специфичных случаев \nи сосредоточиться на сроках разработки программы. Если вам понравился тестовый\nвариант, но вы хотите увидеть полноценно работающее приложение без описанных выше\nошибок, то я готов доорабоать программу до конца.\nСпасибо за внимание!");
+        infoP.setViewportView(infoText);
+
+        javax.swing.GroupLayout mainPanel1Layout = new javax.swing.GroupLayout(mainPanel1);
+        mainPanel1.setLayout(mainPanel1Layout);
+        mainPanel1Layout.setHorizontalGroup(
+            mainPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(infoLabel)
+                    .addComponent(infoP, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(89, Short.MAX_VALUE))
+        );
+        mainPanel1Layout.setVerticalGroup(
+            mainPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(infoLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addComponent(infoP, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 464, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 340, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         editPanel.add(mainPanel, "MAIN_PANEL");
@@ -490,7 +599,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(editTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pkColumnComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pkColumnLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
                 .addGroup(editTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createColumnButton)
                     .addComponent(deleteColumnButton)
@@ -511,11 +620,17 @@ public class MainFrame extends javax.swing.JFrame {
 
         uppMenuBar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jMenu1.setText("File");
-        uppMenuBar.add(jMenu1);
+        connectionMenu.setText("Connection");
 
-        jMenu2.setText("Edit");
-        uppMenuBar.add(jMenu2);
+        setNewConnectionMenuItem.setText("Set new connection");
+        setNewConnectionMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setNewConnectionMenuItemActionPerformed(evt);
+            }
+        });
+        connectionMenu.add(setNewConnectionMenuItem);
+
+        uppMenuBar.add(connectionMenu);
 
         setJMenuBar(uppMenuBar);
 
@@ -573,7 +688,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void createTableMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTableMenuItemActionPerformed
         showPanel("EDIT_TABLE");
-
+        openCreatePanel();
     }//GEN-LAST:event_createTableMenuItemActionPerformed
 
     private void editTableMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editTableMenuItemActionPerformed
@@ -643,11 +758,49 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_sizeCreateColumnFormattedTextFieldActionPerformed
 
+    private void setNewConnectionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setNewConnectionMenuItemActionPerformed
+        openSetConnectionDialog();
+    }//GEN-LAST:event_setNewConnectionMenuItemActionPerformed
+
+    private void tryConnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tryConnectButtonActionPerformed
+        saveNewConnection();
+    }//GEN-LAST:event_tryConnectButtonActionPerformed
+
     private void columnTypeEditColumnComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {
         enableSizeField(sizeEditColumnFormattedTextField, columnTypeEditColumnComboBox);
     }
 
     /// ---methods---
+
+    private void openCreatePanel() {
+        Table table = new Table("New table");
+        setTableColumns(table);
+        tableNameField.setText(table.getName());
+        setPkColumnComboBoxModel(table);
+
+        mainFrameController.setNewChangeModel(table.getName());
+    }
+
+    private void saveNewConnection() {
+        try {
+            mainFrameController.setConnection(
+                    urlTextField.getText(),
+                    userTextField.getText(),
+                    passwordTextField.getText()
+            );
+            setConnectionDialog.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Wrong connection info");
+        }
+    }
+
+    private void openSetConnectionDialog() {
+        var conInfo = mainFrameController.getConInfo();
+        urlTextField.setText(conInfo.get(0));
+        userTextField.setText(conInfo.get(1));
+        passwordTextField.setText(conInfo.get(2));
+        setConnectionDialog.setVisible(true);
+    }
 
     private void enableSizeField(JFormattedTextField formattedTextField, JComboBox jComboBox) {
         if (jComboBox.getSelectedItem().toString().equals("varchar")){
@@ -971,7 +1124,6 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             return Integer.parseInt(value.toString());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
             return 0;
         }
     }
@@ -1014,8 +1166,9 @@ public class MainFrame extends javax.swing.JFrame {
                     ChangeService changeService = new ChangeService();
                     PostgresTableRepository postgresTableRepository = new PostgresTableRepository(postgresConnection);
                     SaveChangeLogService saveChangeLogService = new SaveChangeLogService(postgresTableRepository);
+                    ConnectionService connectionService = new ConnectionService(postgresConnection);
 
-                    MainFrameController mainFrameController = new MainFrameController(treeService, databaseService, changeService, saveChangeLogService);
+                    MainFrameController mainFrameController = new MainFrameController(treeService, databaseService, changeService, saveChangeLogService, connectionService);
 
                     new MainFrame(mainFrameController).setVisible(true);
 
@@ -1038,6 +1191,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> columnTypeCreateColumnComboBox;
     private javax.swing.JComboBox<String> columnTypeEditColumnComboBox;
     private javax.swing.JTable columnsTable;
+    private javax.swing.JMenu connectionMenu;
     private javax.swing.JButton createColumnButton;
     private javax.swing.JDialog createColumnDialog;
     private javax.swing.JButton createCreateColumnButton;
@@ -1051,28 +1205,39 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel editPanel;
     private javax.swing.JMenuItem editTableMenuItem;
     private javax.swing.JPanel editTablePanel;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JLabel infoLabel;
+    private javax.swing.JScrollPane infoP;
+    private javax.swing.JTextArea infoText;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JPanel mainPanel1;
     private javax.swing.JLabel nameCreateColumnLabel;
     private javax.swing.JLabel nameEditColumnLabel;
     private javax.swing.JCheckBox nullableCreateColumnCheckBox;
     private javax.swing.JLabel nullableCreateColumnLabel;
     private javax.swing.JCheckBox nullableEditColumnCheckBox;
     private javax.swing.JLabel nullableEditColumnLabel;
+    private javax.swing.JLabel passLabel;
+    private javax.swing.JTextField passwordTextField;
     private javax.swing.JComboBox<String> pkColumnComboBox;
     private javax.swing.JLabel pkColumnLabel;
     private javax.swing.JButton saveButton;
+    private javax.swing.JDialog setConnectionDialog;
+    private javax.swing.JMenuItem setNewConnectionMenuItem;
     private javax.swing.JFormattedTextField sizeCreateColumnFormattedTextField;
     private javax.swing.JLabel sizeCreateColumnLabel;
     private javax.swing.JFormattedTextField sizeEditColumnFormattedTextField;
     private javax.swing.JLabel sizeEditColumnLabel;
     private javax.swing.JTextField tableNameField;
     private javax.swing.JPopupMenu treePopupMenu;
+    private javax.swing.JButton tryConnectButton;
     private javax.swing.JLabel typeCreateColumnLabel;
     private javax.swing.JLabel typeEditColumnLabel;
     private javax.swing.JButton updateTreeButton;
     private javax.swing.JMenuBar uppMenuBar;
+    private javax.swing.JLabel urlLabel;
+    private javax.swing.JTextField urlTextField;
+    private javax.swing.JLabel userLabel;
+    private javax.swing.JTextField userTextField;
     // End of variables declaration//GEN-END:variables
 }

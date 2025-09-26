@@ -1,5 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/university-and-business-bot-backend
-    username: postgres
-    password: 1234
