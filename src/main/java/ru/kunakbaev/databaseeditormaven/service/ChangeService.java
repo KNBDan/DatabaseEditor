@@ -2,31 +2,36 @@ package ru.kunakbaev.databaseeditormaven.service;
 
 import org.springframework.stereotype.Service;
 import ru.kunakbaev.databaseeditormaven.model.Column;
-import ru.kunakbaev.databaseeditormaven.model.TableChange;
+import ru.kunakbaev.databaseeditormaven.model.Change;
+import ru.kunakbaev.databaseeditormaven.model.UpdateColumn;
 
 @Service
 public class ChangeService {
 
-    private TableChange changes;
+    private Change changes;
 
     public ChangeService() {
-        this.changes = new TableChange();
+        this.changes = new Change();
     }
 
     public void newChangeModel(String tableName) {
-        this.changes = new TableChange(tableName);
+        this.changes = new Change(tableName);
     }
 
     public void createColumn(Column column) {
         changes.createColumn(column);
     }
 
+    public Change getChanges() {
+        return changes;
+    }
+
     public void deleteColumn(String delColumnName) {
         var modifiedColumns = changes.getModifiedColumns();
-        for (Column column : modifiedColumns) {
-            if (column.getName().equals(delColumnName)) {
-                modifiedColumns.remove(column);
-                changes.deleteColumn(column);
+        for (UpdateColumn updateColumn : modifiedColumns) {
+            if (updateColumn.getUpdatedCondition().getName().equals(delColumnName)) {
+                modifiedColumns.remove(updateColumn);
+                changes.deleteColumn(updateColumn.getFirstCondition());
                 return;
             }
         }
@@ -40,24 +45,25 @@ public class ChangeService {
         }
     }
 
-    public void updateColumn(String oldName, Column updatedColumn) {
+    public void updateColumn(Column oldColumn, Column updatedColumn) {
         var addedColumns = changes.getAddedColumns();
         var modifiedColumns = changes.getModifiedColumns();
         for (Column column : addedColumns) {
-            if (column.getName().equals(oldName)) {
+            if (column.equals(oldColumn)) {
                 addedColumns.remove(column);
                 addedColumns.add(updatedColumn);
                 return;
             }
         }
-        for (Column column : modifiedColumns) {
-            if (column.getName().equals(oldName)) {
-                modifiedColumns.remove(column);
-                modifiedColumns.add(updatedColumn);
+        for (UpdateColumn updateColumnModel : modifiedColumns) {
+            if (updateColumnModel.getUpdatedCondition().equals(oldColumn)) { // Если у записанного обновленной колонки имя равно имени изменяемой колонке
+                modifiedColumns.remove(updateColumnModel); // То удаляем старую запись
+                updateColumnModel.setUpdatedCondition(updatedColumn); // Меняем новую колонку в модели
+                modifiedColumns.add(updateColumnModel); // Записываем обновленную иодель
                 return;
             }
         }
-        changes.updateColumn(updatedColumn);
+        changes.updateColumn(new UpdateColumn(oldColumn, updatedColumn));
     }
 
 }

@@ -44,4 +44,21 @@ public class Column {
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Column column = (Column) o;
+        return size == column.size &&
+                nullable == column.nullable &&
+                java.util.Objects.equals(name, column.name) &&
+                java.util.Objects.equals(type, column.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(name, type, size, nullable);
+    }
 }

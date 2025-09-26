@@ -4,12 +4,18 @@
  */
 package ru.kunakbaev.databaseeditormaven.frame;
 
-import ru.kunakbaev.databaseeditormaven.configuration.PosgresConection;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.kunakbaev.databaseeditormaven.configuration.DbConfigManager;
+import ru.kunakbaev.databaseeditormaven.configuration.PostgresConnection;
 import ru.kunakbaev.databaseeditormaven.controller.MainFrameController;
 import ru.kunakbaev.databaseeditormaven.model.Column;
 import ru.kunakbaev.databaseeditormaven.model.Table;
+import ru.kunakbaev.databaseeditormaven.repository.PostgresTableRepository;
 import ru.kunakbaev.databaseeditormaven.service.ChangeService;
 import ru.kunakbaev.databaseeditormaven.service.DatabaseService;
+import ru.kunakbaev.databaseeditormaven.service.SaveChangeLogService;
 import ru.kunakbaev.databaseeditormaven.service.ui.TreeService;
 
 import javax.swing.*;
@@ -19,20 +25,19 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 import java.util.Arrays;
 
 /**
  *
- * @author HPPavilion
+ * @author kunakbaev
  */
 public class MainFrame extends javax.swing.JFrame {
 
     private final MainFrameController mainFrameController;
-    private final  ChangeService changeService;
 
-    public MainFrame(MainFrameController mainFrameController, ChangeService changeService) {
+    public MainFrame(MainFrameController mainFrameController) {
         this.mainFrameController = mainFrameController;
-        this.changeService = changeService;
 
         initComponents();
 
@@ -547,7 +552,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void updateTreeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateTreeButtonActionPerformed
-        dbTree.setModel(mainFrameController.getTreeModel());
+        updateTree();
     }//GEN-LAST:event_updateTreeButtonActionPerformed
 
     private void tableNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableNameFieldActionPerformed
@@ -559,7 +564,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // TODO add your handling code here:
+        saveTable();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void deleteColumnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteColumnButtonActionPerformed
@@ -653,6 +658,22 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
+    private void updateTree() {
+        try {
+            dbTree.setModel(mainFrameController.getTreeModel());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void saveTable() {
+        try {
+            mainFrameController.saveTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
     private void deleteSelectedColumn() {
         int selectedRow = columnsTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -674,7 +695,8 @@ public class MainFrame extends javax.swing.JFrame {
             model.removeRow(selectedRow);
         }
 
-        changeService.deleteColumn(columnName); // ChangeLog Delete
+        mainFrameController.saveDeletedColumn(columnName);
+//        changeService.deleteColumn(columnName);
     }
 
     private void dbTreeMouseReleased(java.awt.event.MouseEvent evt) {                                     
@@ -733,27 +755,32 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void openEditPanel() {
-        var node = (DefaultMutableTreeNode) dbTree.getSelectionPath().getLastPathComponent();
-        int level = getNodeLevel(node);
-        Table table;
-        switch (level) {
-            case 1:
-                table = mainFrameController.getTree(node.getUserObject().toString());
-                break;
-            case 2:
-                table = mainFrameController.getTree(node.getParent().toString());
-                break;
-            case -1:
-                return;
-            default:
-                return;
+        try {
+            var node = (DefaultMutableTreeNode) dbTree.getSelectionPath().getLastPathComponent();
+            int level = getNodeLevel(node);
+            Table table;
+            switch (level) {
+                case 1:
+                    table = mainFrameController.getTree(node.getUserObject().toString());
+                    break;
+                case 2:
+                    table = mainFrameController.getTree(node.getParent().toString());
+                    break;
+                case -1:
+                    return;
+                default:
+                    return;
+            }
+
+            setTableColumns(table);
+            tableNameField.setText(table.getName());
+            setPkColumnComboBoxModel(table);
+
+            mainFrameController.setNewChangeModel(table.getName());
+            //        changeService.newChangeModel(table.getName());  //ChangeLog create
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
-
-        setTableColumns(table);
-        tableNameField.setText(table.getName());
-        setPkColumnComboBoxModel(table);
-
-        changeService.newChangeModel(table.getName());  //ChangeLog create
     }
 
     private void setPkColumnComboBoxModel(Table table) {
@@ -792,7 +819,7 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             importColumnDataToFields();
         } catch (Exception e) {
-            return;
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
         editColumnDialog.setVisible(true);
     }
@@ -861,20 +888,32 @@ public class MainFrame extends javax.swing.JFrame {
             newRow[2] = column.getSize();
         }
 
-        changeService.createColumn(column);
+        mainFrameController.saveNewColumn(column);
+//        changeService.createColumn(column); ChangeLog saveNewColumn
         model.addRow(newRow);
     }
 
     private void updateTableRow(int row) {
-
-        Column column = new Column(
-                columnNameEditColumnTextField.getText(),
-                columnTypeEditColumnComboBox.getSelectedItem().toString(),
-                Integer.valueOf(sizeEditColumnFormattedTextField.getValue().toString()),
-                nullableEditColumnCheckBox.isSelected()
+        Column oldColumn = new Column(
+                getStringValue(columnsTable.getValueAt(row,0)),
+                getStringValue(columnsTable.getValueAt(row,1)),
+                getIntValue(columnsTable.getValueAt(row,2)),
+                getBooleanValue(columnsTable.getValueAt(row,3))
         );
 
-        changeService.updateColumn(columnsTable.getValueAt(row,0).toString(), column); // CangeLog Update
+        Column column = new Column(
+                getStringValue(columnNameEditColumnTextField.getText()),
+                getStringValue(columnTypeEditColumnComboBox.getSelectedItem()),
+                getIntValue(sizeEditColumnFormattedTextField.getValue().toString()),
+                getBooleanValue(nullableEditColumnCheckBox.isSelected())
+        );
+
+        if (oldColumn.equals(column)){
+            return;
+        }
+
+        mainFrameController.saveUpdatedColumn(oldColumn, column);
+//        changeService.updateColumn(oldColumn, column); // ChangeLog Update
 
         columnsTable.setValueAt(column.getName(), row, 0);
         columnsTable.setValueAt(column.getType(), row, 1);
@@ -917,6 +956,33 @@ public class MainFrame extends javax.swing.JFrame {
         }
         return false;
     }
+
+    private String getStringValue(Object value) {
+        if (value == null) {
+            return "";
+        }
+        return value.toString();
+    }
+
+    private int getIntValue(Object value) {
+        if (value == null) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(value.toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+            return 0;
+        }
+    }
+
+    private boolean getBooleanValue(Object value) {
+        if (value == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(value.toString());
+    }
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -939,20 +1005,23 @@ public class MainFrame extends javax.swing.JFrame {
             public void run() {
 
                 try {
-                    PosgresConection posgresConection = new PosgresConection();
 
-                    var conn = posgresConection.dataSource();
+                    DbConfigManager dbConfigManager = new DbConfigManager();
+                    PostgresConnection postgresConnection = new PostgresConnection(dbConfigManager);
 
-                    DatabaseService databaseService = new DatabaseService(conn);
+                    DatabaseService databaseService = new DatabaseService(postgresConnection);
                     TreeService treeService = new TreeService(databaseService);
-                    MainFrameController mainFrameController = new MainFrameController(treeService, databaseService);
                     ChangeService changeService = new ChangeService();
+                    PostgresTableRepository postgresTableRepository = new PostgresTableRepository(postgresConnection);
+                    SaveChangeLogService saveChangeLogService = new SaveChangeLogService(postgresTableRepository);
 
-                    new MainFrame(mainFrameController, changeService).setVisible(true);
+                    MainFrameController mainFrameController = new MainFrameController(treeService, databaseService, changeService, saveChangeLogService);
+
+                    new MainFrame(mainFrameController).setVisible(true);
 
 
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
         });

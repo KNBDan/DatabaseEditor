@@ -2,23 +2,23 @@ package ru.kunakbaev.databaseeditormaven.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class TableChange {
-    private String table;
+public class Change {
+    private String oldTableName;
+    private String newTableName;
     private String newPk;
     private List<Column> addedColumns;
     private List<Column> deletedColumns;
-    private List<Column> modifiedColumns;
+    private List<UpdateColumn> modifiedColumns;
 
-    public TableChange() {
+    public Change() {
         addedColumns = new ArrayList<>();
         deletedColumns = new ArrayList<>();
         modifiedColumns = new ArrayList<>();
     }
 
-    public TableChange(String table) {
-        this.table = table;
+    public Change(String oldTableName) {
+        this.oldTableName = oldTableName;
         addedColumns = new ArrayList<>();
         deletedColumns = new ArrayList<>();
         modifiedColumns = new ArrayList<>();
@@ -32,8 +32,8 @@ public class TableChange {
         deletedColumns.add(column);
     }
 
-    public void updateColumn(Column column) {
-        modifiedColumns.add(column);
+    public void updateColumn(UpdateColumn updateColumn) {
+        modifiedColumns.add(updateColumn);
     }
 
     public List<Column> getDeletedColumns() {
@@ -44,11 +44,11 @@ public class TableChange {
         this.deletedColumns = deletedColumns;
     }
 
-    public List<Column> getModifiedColumns() {
+    public List<UpdateColumn> getModifiedColumns() {
         return modifiedColumns;
     }
 
-    public void setModifiedColumns(List<Column> modifiedColumns) {
+    public void setModifiedColumns(List<UpdateColumn> modifiedColumns) {
         this.modifiedColumns = modifiedColumns;
     }
 
@@ -68,15 +68,25 @@ public class TableChange {
         this.newPk = newPk;
     }
 
-    public String getTable() {
-        return table;
+    public String getNewTableName() {
+        return newTableName;
     }
 
-    public void setTable(String table) {
-        this.table = table;
+    public void setNewTableName(String newTableName) {
+        this.newTableName = newTableName;
     }
+
+    public String getOldTableName() {
+        return oldTableName;
+    }
+
+    public void setOldTableName(String oldTableName) {
+        this.oldTableName = oldTableName;
+    }
+}
 //create - just add names
 //change - if name in create - rewrite create
 //delete - check in create column name - just delete in create and done | or add name to delete and delete change by name
-}
+
+
 //METHOD - Column name - Column field - new variable //deprecated
