@@ -86,17 +86,28 @@ public class PostgresTableRepository implements TableRepository {
         postgresConnection.executeSQL(sql);
     }
 
-    private String buildColumnDefinition(Column column) {
-        String definition = column.getName() + " " + column.getType();
+    @Override
+    public void deletePk(String tableName) throws SQLException {
+        String constraintName = "pk_" + tableName;
+        String sql = "ALTER TABLE " + tableName + " DROP CONSTRAINT IF EXISTS " + constraintName;
+        postgresConnection.executeSQL(sql);
+        constraintName = tableName + "_pkey";
+        sql = "ALTER TABLE " + tableName + " DROP CONSTRAINT IF EXISTS " + constraintName;
+        postgresConnection.executeSQL(sql);
+    }
 
-        if ("varchar".equals(column.getType())) {
-            definition += "(" + column.getSize() + ")";
-        }
+    @Override
+    public void setPk(String tableName, String newPk) throws SQLException {
+        String makeNotNullSql = "ALTER TABLE " + tableName + " ALTER COLUMN " + newPk + " SET NOT NULL";
+        postgresConnection.executeSQL(makeNotNullSql);
 
-        if (!column.isNullable()) {
-            definition += " NOT NULL";
-        }
+        String setPkSql = "ALTER TABLE " + tableName + " ADD PRIMARY KEY (" + newPk + ")";
+        postgresConnection.executeSQL(setPkSql);
+    }
 
-        return definition;
+    @Override
+    public void deleteTable(String tableName) throws SQLException {
+        String sql = "DROP TABLE IF EXISTS " + tableName +" CASCADE";
+        postgresConnection.executeSQL(sql);
     }
 }

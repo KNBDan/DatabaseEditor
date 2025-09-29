@@ -1,12 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package ru.kunakbaev.databaseeditormaven.frame;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.kunakbaev.databaseeditormaven.configuration.DbConfigManager;
 import ru.kunakbaev.databaseeditormaven.configuration.PostgresConnection;
 import ru.kunakbaev.databaseeditormaven.controller.MainFrameController;
@@ -21,12 +14,15 @@ import ru.kunakbaev.databaseeditormaven.service.ui.TreeService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 /**
@@ -94,10 +90,10 @@ public class MainFrame extends javax.swing.JFrame {
         dbTree = new javax.swing.JTree();
         editPanel = new javax.swing.JPanel();
         mainPanel = new javax.swing.JPanel();
-        mainPanel1 = new javax.swing.JPanel();
         infoLabel = new javax.swing.JLabel();
         infoP = new javax.swing.JScrollPane();
         infoText = new javax.swing.JTextArea();
+        updateTreeButton = new javax.swing.JButton();
         editTablePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         columnsTable = new javax.swing.JTable();
@@ -110,7 +106,6 @@ public class MainFrame extends javax.swing.JFrame {
         TableNameLabel = new javax.swing.JLabel();
         pkColumnLabel = new javax.swing.JLabel();
         editColumnButton = new javax.swing.JButton();
-        updateTreeButton = new javax.swing.JButton();
         uppMenuBar = new javax.swing.JMenuBar();
         connectionMenu = new javax.swing.JMenu();
         setNewConnectionMenuItem = new javax.swing.JMenuItem();
@@ -170,7 +165,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        columnTypeEditColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "double" }));
+        columnTypeEditColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "float4" }));
         columnTypeEditColumnComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 columnTypeEditColumnComboBoxItemStateChanged(evt);
@@ -271,7 +266,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        columnTypeCreateColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "double" }));
+        columnTypeCreateColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "float4" }));
         columnTypeCreateColumnComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 columnTypeCreateColumnComboBoxItemStateChanged(evt);
@@ -421,9 +416,6 @@ public class MainFrame extends javax.swing.JFrame {
         mainPanel.setBackground(new java.awt.Color(255, 255, 255));
         mainPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        mainPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        mainPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         infoLabel.setText("Select any table or create new");
 
         infoText.setEditable(false);
@@ -433,42 +425,35 @@ public class MainFrame extends javax.swing.JFrame {
         infoText.setText("Тестовое задание на создание, удаление и редактирование таблиц. \n\nХотел бы отметить недоработки данной программы:\n- Нельзя менять заполненные таблицы (не прописывается DEFAULT, поэтому все новая \nколонка состоит из null)\n- Есил в базе данных больше 1 схемы, программа подтягивает все таблицы и не может \nкорректно с ними рабоать (сохранение выдает ошибку). В основном работал на MySQL, \nпоэтому забыл про особеннсоть структуры Postgresql \n\nСделал выбор закончить тестовое задание с минимальными исправлениями специфичных случаев \nи сосредоточиться на сроках разработки программы. Если вам понравился тестовый\nвариант, но вы хотите увидеть полноценно работающее приложение без описанных выше\nошибок, то я готов доорабоать программу до конца.\nСпасибо за внимание!");
         infoP.setViewportView(infoText);
 
-        javax.swing.GroupLayout mainPanel1Layout = new javax.swing.GroupLayout(mainPanel1);
-        mainPanel1.setLayout(mainPanel1Layout);
-        mainPanel1Layout.setHorizontalGroup(
-            mainPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(mainPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(infoLabel)
-                    .addComponent(infoP, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(89, Short.MAX_VALUE))
-        );
-        mainPanel1Layout.setVerticalGroup(
-            mainPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(infoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                .addComponent(infoP, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        updateTreeButton.setText("Update tree");
+        updateTreeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateTreeButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(infoP, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(updateTreeButton)
+                    .addComponent(infoLabel))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(mainPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(8, 8, 8)
+                .addComponent(infoLabel)
+                .addGap(18, 18, 18)
+                .addComponent(updateTreeButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(infoP, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         editPanel.add(mainPanel, "MAIN_PANEL");
@@ -545,7 +530,11 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        pkColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        pkColumnComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                pkColumnComboBoxItemStateChanged(evt);
+            }
+        });
 
         TableNameLabel.setText("Table name");
 
@@ -611,14 +600,17 @@ public class MainFrame extends javax.swing.JFrame {
 
         editPanel.add(editTablePanel, "EDIT_TABLE");
 
-        updateTreeButton.setText("Update tree");
-        updateTreeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateTreeButtonActionPerformed(evt);
-            }
-        });
-
         uppMenuBar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+//        pkColumnComboBox.addItemListener(new ItemListener() {
+//            @Override
+//            public void itemStateChanged(ItemEvent e) {
+//                if (e.getStateChange() == ItemEvent.SELECTED) {
+//                    Object selectedItem = e.getItem();
+//                    saveNewPk(selectedItem.toString());
+//                }
+//            }
+//        });
 
         connectionMenu.setText("Connection");
 
@@ -640,9 +632,7 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dbTreeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(updateTreeButton))
+                .addComponent(dbTreeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(editPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -653,15 +643,14 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(editPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(updateTreeButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dbTreeScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addComponent(dbTreeScrollPanel))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+
 
     private void treePopupMenuMouseExited(MouseEvent evt) {
     }
@@ -675,11 +664,18 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_tableNameFieldActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+        updateTree();
+        showPanel("MAIN_PANEL");
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        saveTable();
+        try {
+            saveTable();
+            updateTree();
+            showPanel("MAIN_PANEL");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void deleteColumnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteColumnButtonActionPerformed
@@ -697,7 +693,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_editTableMenuItemActionPerformed
 
     private void deleteTableMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteTableMenuItemActionPerformed
-        // TODO add your handling code here:
+        deleteTable();
     }//GEN-LAST:event_deleteTableMenuItemActionPerformed
 
     private void applyEditColumnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyEditColumnButtonActionPerformed
@@ -764,7 +760,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void tryConnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tryConnectButtonActionPerformed
         saveNewConnection();
+        updateTree();
     }//GEN-LAST:event_tryConnectButtonActionPerformed
+
+    private void pkColumnComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_pkColumnComboBoxItemStateChanged
+    }//GEN-LAST:event_pkColumnComboBoxItemStateChanged
 
     private void columnTypeEditColumnComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {
         enableSizeField(sizeEditColumnFormattedTextField, columnTypeEditColumnComboBox);
@@ -772,13 +772,24 @@ public class MainFrame extends javax.swing.JFrame {
 
     /// ---methods---
 
-    private void openCreatePanel() {
-        Table table = new Table("New table");
-        setTableColumns(table);
-        tableNameField.setText(table.getName());
-        setPkColumnComboBoxModel(table);
+    private void saveNewPk(String newPk) {
+        try {
+            if (newPk != null) {
+                mainFrameController.setPk(newPk);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
 
-        mainFrameController.setNewChangeModel(table.getName());
+    }
+
+    private void openCreatePanel() {
+//        Table table = new Table("New table");
+        setTableColumns();
+        tableNameField.setText("New_table");
+        updatePkColumnComboBoxModel();
+
+        mainFrameController.setNewChangeModel();
     }
 
     private void saveNewConnection() {
@@ -819,11 +830,17 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    private void saveTable() {
-        try {
-            mainFrameController.saveTable();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+    private void saveTable() throws Exception{
+        setNewTableName(tableNameField.getText());
+        saveNewPk(pkColumnComboBox.getSelectedItem().toString());
+        mainFrameController.saveTable();
+    }
+
+    private void setNewTableName(String tableName) throws Exception {
+        if (isPostgresAvailableTableName(tableName)) {
+            mainFrameController.setNewTableName(tableName);
+        } else {
+            throw new Exception("Table name is not correct");
         }
     }
 
@@ -835,21 +852,28 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         DefaultTableModel model = (DefaultTableModel) columnsTable.getModel();
-        String columnName = model.getValueAt(selectedRow,0).toString();
+        Column delColumn = new Column(
+                getStringValue(columnsTable.getValueAt(selectedRow,0)),
+                getStringValue(columnsTable.getValueAt(selectedRow,1)),
+                getIntValue(columnsTable.getValueAt(selectedRow,2)),
+                getBooleanValue(columnsTable.getValueAt(selectedRow,3))
+        );
+
 
         int result = JOptionPane.showConfirmDialog(
                 this,
-                "Do you want to delet row \"" + columnName + "\"?",
+                "Do you want to delet row \"" + delColumn.getName() + "\"?",
                 "Delete",
                 JOptionPane.YES_NO_OPTION
         );
 
         if (result == JOptionPane.YES_OPTION) {
             model.removeRow(selectedRow);
+            mainFrameController.saveDeletedColumn(delColumn);
+            updatePkColumnComboBoxModel();
+        } else {
+            return;
         }
-
-        mainFrameController.saveDeletedColumn(columnName);
-//        changeService.deleteColumn(columnName);
     }
 
     private void dbTreeMouseReleased(java.awt.event.MouseEvent evt) {                                     
@@ -907,45 +931,91 @@ public class MainFrame extends javax.swing.JFrame {
         return level;
     }
 
-    private void openEditPanel() {
+    private void deleteTable() {
         try {
-            var node = (DefaultMutableTreeNode) dbTree.getSelectionPath().getLastPathComponent();
-            int level = getNodeLevel(node);
-            Table table;
-            switch (level) {
-                case 1:
-                    table = mainFrameController.getTree(node.getUserObject().toString());
-                    break;
-                case 2:
-                    table = mainFrameController.getTree(node.getParent().toString());
-                    break;
-                case -1:
-                    return;
-                default:
-                    return;
+            Table table = getTableFromTree();
+            if (table == null) {
+                return;
             }
 
+            int result = JOptionPane.showConfirmDialog(
+                    this,
+                    "Do you want to delete table \"" + table.getName() +"\"?",
+                    "Delete",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (result == JOptionPane.NO_OPTION) {
+                return;
+            }
+
+            mainFrameController.deleteTable(table.getName());
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+
+    }
+
+    private Table getTableFromTree() throws SQLException {
+        var node = (DefaultMutableTreeNode) dbTree.getSelectionPath().getLastPathComponent();
+        int level = getNodeLevel(node);
+        Table table;
+        switch (level) {
+            case 1:
+                table = mainFrameController.getTree(node.getUserObject().toString());
+                break;
+            case 2:
+                table = mainFrameController.getTree(node.getParent().toString());
+                break;
+            case -1:
+                return null;
+            default:
+                return null;
+        }
+        return table;
+    }
+
+    private void openEditPanel() {
+        try {
+            Table table = getTableFromTree();
+            if (table == null) {
+                return;
+            }
             setTableColumns(table);
             tableNameField.setText(table.getName());
-            setPkColumnComboBoxModel(table);
+            updatePkColumnComboBoxModel();
+            setPk(table.getPkColumn());
 
             mainFrameController.setNewChangeModel(table.getName());
-            //        changeService.newChangeModel(table.getName());  //ChangeLog create
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
 
-    private void setPkColumnComboBoxModel(Table table) {
+    private void updatePkColumnComboBoxModel() {
         DefaultComboBoxModel comboBoxModel = (DefaultComboBoxModel) pkColumnComboBox.getModel();
         comboBoxModel.removeAllElements();
 
-        for (Column column : table.getColumns()) {
-            comboBoxModel.addElement(column.getName());
+        DefaultTableModel model = (DefaultTableModel) columnsTable.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String columnName = (String) model.getValueAt(i, 0);
+            comboBoxModel.addElement(columnName);
         }
 
         pkColumnComboBox.setModel(comboBoxModel);
-        pkColumnComboBox.setSelectedItem(table.getPkColumn());
+
+        var pk = mainFrameController.getPk();
+        if (pk != null) {
+            pkColumnComboBox.setSelectedItem(pk);
+        }
+//        pkColumnComboBox.setSelectedItem(mainFrameController.getPk());
+    }
+
+    private void setPk(String pk) {
+        if (pk != null) {
+            pkColumnComboBox.setSelectedItem(pk);
+        }
     }
 
     private void setTableColumns(Table table) {
@@ -968,13 +1038,19 @@ public class MainFrame extends javax.swing.JFrame {
         columnsTable.setModel(columnsModel);
     }
 
+    public void setTableColumns() {
+        DefaultTableModel columnsModel = (DefaultTableModel) columnsTable.getModel();
+        columnsModel.setRowCount(0);
+        columnsTable.setModel(columnsModel);
+    }
+
     private void openEditColumnDialog() {
         try {
             importColumnDataToFields();
+            editColumnDialog.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
-        editColumnDialog.setVisible(true);
     }
 
     private void openCreateColumnDialog() {
@@ -1044,6 +1120,7 @@ public class MainFrame extends javax.swing.JFrame {
         mainFrameController.saveNewColumn(column);
 //        changeService.createColumn(column); ChangeLog saveNewColumn
         model.addRow(newRow);
+        updatePkColumnComboBoxModel();
     }
 
     private void updateTableRow(int row) {
@@ -1077,6 +1154,8 @@ public class MainFrame extends javax.swing.JFrame {
         }
         columnsTable.setValueAt(column.isNullable(), row, 3);
         columnsTable.setRowSelectionInterval(row, row);
+
+        updatePkColumnComboBoxModel();
     }
 
     private void isSizeFieldEnable(JComboBox<String> comboBox, JFormattedTextField formatTextField) throws Exception {
@@ -1087,12 +1166,23 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void isNameFieldEnable(JTextField textField) throws Exception {
         var name = textField.getText();
-        if (name == null || name.isEmpty() || !name.matches("[a-zA-Z_][a-zA-Z0-9_]{0,62}")) {
+        if (isPostgresAvailableName(name)) {
             throw new Exception("Wrong column name");
         }
         if (isDuplicateName(name)) {
             throw new Exception("Column with this name already exist");
         }
+    }
+
+    private boolean isPostgresAvailableTableName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        return !name.matches(".*[\\s\\-\\+\\*\\/\\\"'].*");
+    }
+
+    private boolean isPostgresAvailableName(String name) {
+        return (name == null || name.isEmpty() || !name.matches("[a-zA-Z_][a-zA-Z0-9_]{0,62}"));
     }
 
     private boolean isDuplicateName(String name) {
@@ -1210,7 +1300,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea infoText;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JPanel mainPanel1;
     private javax.swing.JLabel nameCreateColumnLabel;
     private javax.swing.JLabel nameEditColumnLabel;
     private javax.swing.JCheckBox nullableCreateColumnCheckBox;

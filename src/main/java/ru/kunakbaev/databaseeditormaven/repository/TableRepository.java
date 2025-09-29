@@ -16,4 +16,10 @@ public interface TableRepository {
     public void updateColumn(String tableName, String oldColumnName, Column newColumn) throws SQLException;
 
     public void updateTableName(String oldTableName, String newTableName) throws SQLException;
+
+    public void deletePk(String tableName) throws SQLException;
+
+    public void setPk(String tableName, String columnName) throws SQLException;
+
+    public void deleteTable(String tableName) throws SQLException;
 }
