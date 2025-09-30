@@ -18,18 +18,32 @@ public class ChangeService {
         this.changes = new Change(tableName);
     }
 
-    public void createColumn(Column column) {
-        changes.createColumn(column);
+    public void newChangeModel() {
+        this.changes = new Change();
+    }
+
+    public void createColumn(Column createColumn) {
+        var deletedColumns = changes.getDeletedColumns();
+
+        for (Column column : deletedColumns) {
+            if (column.getName().equals(createColumn.getName())) {
+                deletedColumns.remove(column);
+                changes.updateColumn(new UpdateColumn(column, createColumn));
+                return;
+            }
+        }
+
+        changes.createColumn(createColumn);
     }
 
     public Change getChanges() {
         return changes;
     }
 
-    public void deleteColumn(String delColumnName) {
+    public void deleteColumn(Column deleteColumn) {
         var modifiedColumns = changes.getModifiedColumns();
         for (UpdateColumn updateColumn : modifiedColumns) {
-            if (updateColumn.getUpdatedCondition().getName().equals(delColumnName)) {
+            if (updateColumn.getUpdatedCondition().equals(deleteColumn)) {
                 modifiedColumns.remove(updateColumn);
                 changes.deleteColumn(updateColumn.getFirstCondition());
                 return;
@@ -38,11 +52,12 @@ public class ChangeService {
 
         var addedColumns = changes.getAddedColumns();
         for (Column column : addedColumns) {
-            if (column.getName().equals(delColumnName)) {
+            if (column.equals(deleteColumn)) {
                 addedColumns.remove(column);
                 return;
             }
         }
+        changes.deleteColumn(deleteColumn);
     }
 
     public void updateColumn(Column oldColumn, Column updatedColumn) {

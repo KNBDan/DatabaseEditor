@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Change {
+    private boolean isNewTable;
     private String oldTableName;
     private String newTableName;
     private String newPk;
@@ -12,12 +13,15 @@ public class Change {
     private List<UpdateColumn> modifiedColumns;
 
     public Change() {
+        isNewTable = true;
+        this.oldTableName = "New_Table";
         addedColumns = new ArrayList<>();
         deletedColumns = new ArrayList<>();
         modifiedColumns = new ArrayList<>();
     }
 
     public Change(String oldTableName) {
+        isNewTable = false;
         this.oldTableName = oldTableName;
         addedColumns = new ArrayList<>();
         deletedColumns = new ArrayList<>();
@@ -83,6 +87,11 @@ public class Change {
     public void setOldTableName(String oldTableName) {
         this.oldTableName = oldTableName;
     }
+
+    public boolean isNewTable() {
+        return isNewTable;
+    }
+
 }
 //create - just add names
 //change - if name in create - rewrite create

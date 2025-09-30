@@ -505,10 +505,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="dbTreeScrollPanel" min="-2" pref="243" max="-2" attributes="0"/>
-                  <Component id="updateTreeButton" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="dbTreeScrollPanel" min="-2" pref="243" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="editPanel" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -521,11 +518,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="editPanel" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="updateTreeButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="dbTreeScrollPanel" pref="0" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="dbTreeScrollPanel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -581,95 +574,90 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="mainPanel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel1" min="-2" pref="181" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="updateTreeButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="infoP" alignment="0" min="-2" pref="585" max="-2" attributes="0"/>
+                              <Component id="infoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="93" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="mainPanel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="infoLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="updateTreeButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="infoP" min="-2" pref="307" max="-2" attributes="0"/>
+                      <EmptySpace pref="10" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Container class="javax.swing.JPanel" name="mainPanel1">
+            <Component class="javax.swing.JLabel" name="infoLabel">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                </Property>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-                    <EtchetBorder/>
-                  </Border>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Select any table or create new"/>
               </Properties>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="infoP">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
 
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="infoLabel" min="-2" max="-2" attributes="0"/>
-                              <Component id="infoP" min="-2" pref="585" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace pref="89" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="infoLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="49" max="32767" attributes="0"/>
-                          <Component id="infoP" min="-2" pref="307" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="infoLabel">
+                <Component class="javax.swing.JTextArea" name="infoText">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Select any table or create new"/>
+                    <Property name="editable" type="boolean" value="false"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="f2" green="f3" red="ea" type="rgb"/>
+                    </Property>
+                    <Property name="columns" type="int" value="20"/>
+                    <Property name="rows" type="int" value="5"/>
+                    <Property name="text" type="java.lang.String" value="&#x422;&#x435;&#x441;&#x442;&#x43e;&#x432;&#x43e;&#x435; &#x437;&#x430;&#x434;&#x430;&#x43d;&#x438;&#x435; &#x43d;&#x430; &#x441;&#x43e;&#x437;&#x434;&#x430;&#x43d;&#x438;&#x435;, &#x443;&#x434;&#x430;&#x43b;&#x435;&#x43d;&#x438;&#x435; &#x438; &#x440;&#x435;&#x434;&#x430;&#x43a;&#x442;&#x438;&#x440;&#x43e;&#x432;&#x430;&#x43d;&#x438;&#x435; &#x442;&#x430;&#x431;&#x43b;&#x438;&#x446;. &#xa;&#xa;&#x425;&#x43e;&#x442;&#x435;&#x43b; &#x431;&#x44b; &#x43e;&#x442;&#x43c;&#x435;&#x442;&#x438;&#x442;&#x44c; &#x43d;&#x435;&#x434;&#x43e;&#x440;&#x430;&#x431;&#x43e;&#x442;&#x43a;&#x438; &#x434;&#x430;&#x43d;&#x43d;&#x43e;&#x439; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x44b;:&#xa;- &#x41d;&#x435;&#x43b;&#x44c;&#x437;&#x44f; &#x43c;&#x435;&#x43d;&#x44f;&#x442;&#x44c; &#x437;&#x430;&#x43f;&#x43e;&#x43b;&#x43d;&#x435;&#x43d;&#x43d;&#x44b;&#x435; &#x442;&#x430;&#x431;&#x43b;&#x438;&#x446;&#x44b; (&#x43d;&#x435; &#x43f;&#x440;&#x43e;&#x43f;&#x438;&#x441;&#x44b;&#x432;&#x430;&#x435;&#x442;&#x441;&#x44f; DEFAULT, &#x43f;&#x43e;&#x44d;&#x442;&#x43e;&#x43c;&#x443; &#x432;&#x441;&#x435; &#x43d;&#x43e;&#x432;&#x430;&#x44f; &#xa;&#x43a;&#x43e;&#x43b;&#x43e;&#x43d;&#x43a;&#x430; &#x441;&#x43e;&#x441;&#x442;&#x43e;&#x438;&#x442; &#x438;&#x437; null)&#xa;- &#x415;&#x441;&#x438;&#x43b; &#x432; &#x431;&#x430;&#x437;&#x435; &#x434;&#x430;&#x43d;&#x43d;&#x44b;&#x445; &#x431;&#x43e;&#x43b;&#x44c;&#x448;&#x435; 1 &#x441;&#x445;&#x435;&#x43c;&#x44b;, &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x430; &#x43f;&#x43e;&#x434;&#x442;&#x44f;&#x433;&#x438;&#x432;&#x430;&#x435;&#x442; &#x432;&#x441;&#x435; &#x442;&#x430;&#x431;&#x43b;&#x438;&#x446;&#x44b; &#x438; &#x43d;&#x435; &#x43c;&#x43e;&#x436;&#x435;&#x442; &#xa;&#x43a;&#x43e;&#x440;&#x440;&#x435;&#x43a;&#x442;&#x43d;&#x43e; &#x441; &#x43d;&#x438;&#x43c;&#x438; &#x440;&#x430;&#x431;&#x43e;&#x430;&#x442;&#x44c; (&#x441;&#x43e;&#x445;&#x440;&#x430;&#x43d;&#x435;&#x43d;&#x438;&#x435; &#x432;&#x44b;&#x434;&#x430;&#x435;&#x442; &#x43e;&#x448;&#x438;&#x431;&#x43a;&#x443;). &#x412; &#x43e;&#x441;&#x43d;&#x43e;&#x432;&#x43d;&#x43e;&#x43c; &#x440;&#x430;&#x431;&#x43e;&#x442;&#x430;&#x43b; &#x43d;&#x430; MySQL, &#xa;&#x43f;&#x43e;&#x44d;&#x442;&#x43e;&#x43c;&#x443; &#x437;&#x430;&#x431;&#x44b;&#x43b; &#x43f;&#x440;&#x43e; &#x43e;&#x441;&#x43e;&#x431;&#x435;&#x43d;&#x43d;&#x441;&#x43e;&#x442;&#x44c; &#x441;&#x442;&#x440;&#x443;&#x43a;&#x442;&#x443;&#x440;&#x44b; Postgresql &#xa;&#xa;&#x421;&#x434;&#x435;&#x43b;&#x430;&#x43b; &#x432;&#x44b;&#x431;&#x43e;&#x440; &#x437;&#x430;&#x43a;&#x43e;&#x43d;&#x447;&#x438;&#x442;&#x44c; &#x442;&#x435;&#x441;&#x442;&#x43e;&#x432;&#x43e;&#x435; &#x437;&#x430;&#x434;&#x430;&#x43d;&#x438;&#x435; &#x441; &#x43c;&#x438;&#x43d;&#x438;&#x43c;&#x430;&#x43b;&#x44c;&#x43d;&#x44b;&#x43c;&#x438; &#x438;&#x441;&#x43f;&#x440;&#x430;&#x432;&#x43b;&#x435;&#x43d;&#x438;&#x44f;&#x43c;&#x438; &#x441;&#x43f;&#x435;&#x446;&#x438;&#x444;&#x438;&#x447;&#x43d;&#x44b;&#x445; &#x441;&#x43b;&#x443;&#x447;&#x430;&#x435;&#x432; &#xa;&#x438; &#x441;&#x43e;&#x441;&#x440;&#x435;&#x434;&#x43e;&#x442;&#x43e;&#x447;&#x438;&#x442;&#x44c;&#x441;&#x44f; &#x43d;&#x430; &#x441;&#x440;&#x43e;&#x43a;&#x430;&#x445; &#x440;&#x430;&#x437;&#x440;&#x430;&#x431;&#x43e;&#x442;&#x43a;&#x438; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x44b;. &#x415;&#x441;&#x43b;&#x438; &#x432;&#x430;&#x43c; &#x43f;&#x43e;&#x43d;&#x440;&#x430;&#x432;&#x438;&#x43b;&#x441;&#x44f; &#x442;&#x435;&#x441;&#x442;&#x43e;&#x432;&#x44b;&#x439;&#xa;&#x432;&#x430;&#x440;&#x438;&#x430;&#x43d;&#x442;, &#x43d;&#x43e; &#x432;&#x44b; &#x445;&#x43e;&#x442;&#x438;&#x442;&#x435; &#x443;&#x432;&#x438;&#x434;&#x435;&#x442;&#x44c; &#x43f;&#x43e;&#x43b;&#x43d;&#x43e;&#x446;&#x435;&#x43d;&#x43d;&#x43e; &#x440;&#x430;&#x431;&#x43e;&#x442;&#x430;&#x44e;&#x449;&#x435;&#x435; &#x43f;&#x440;&#x438;&#x43b;&#x43e;&#x436;&#x435;&#x43d;&#x438;&#x435; &#x431;&#x435;&#x437; &#x43e;&#x43f;&#x438;&#x441;&#x430;&#x43d;&#x43d;&#x44b;&#x445; &#x432;&#x44b;&#x448;&#x435;&#xa;&#x43e;&#x448;&#x438;&#x431;&#x43e;&#x43a;, &#x442;&#x43e; &#x44f; &#x433;&#x43e;&#x442;&#x43e;&#x432; &#x434;&#x43e;&#x43e;&#x440;&#x430;&#x431;&#x43e;&#x430;&#x442;&#x44c; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x443; &#x434;&#x43e; &#x43a;&#x43e;&#x43d;&#x446;&#x430;.&#xa;&#x421;&#x43f;&#x430;&#x441;&#x438;&#x431;&#x43e; &#x437;&#x430; &#x432;&#x43d;&#x438;&#x43c;&#x430;&#x43d;&#x438;&#x435;!"/>
                   </Properties>
                 </Component>
-                <Container class="javax.swing.JScrollPane" name="infoP">
-                  <AuxValues>
-                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                  </AuxValues>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JTextArea" name="infoText">
-                      <Properties>
-                        <Property name="editable" type="boolean" value="false"/>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="f2" green="f3" red="ea" type="rgb"/>
-                        </Property>
-                        <Property name="columns" type="int" value="20"/>
-                        <Property name="rows" type="int" value="5"/>
-                        <Property name="text" type="java.lang.String" value="&#x422;&#x435;&#x441;&#x442;&#x43e;&#x432;&#x43e;&#x435; &#x437;&#x430;&#x434;&#x430;&#x43d;&#x438;&#x435; &#x43d;&#x430; &#x441;&#x43e;&#x437;&#x434;&#x430;&#x43d;&#x438;&#x435;, &#x443;&#x434;&#x430;&#x43b;&#x435;&#x43d;&#x438;&#x435; &#x438; &#x440;&#x435;&#x434;&#x430;&#x43a;&#x442;&#x438;&#x440;&#x43e;&#x432;&#x430;&#x43d;&#x438;&#x435; &#x442;&#x430;&#x431;&#x43b;&#x438;&#x446;. &#xa;&#xa;&#x425;&#x43e;&#x442;&#x435;&#x43b; &#x431;&#x44b; &#x43e;&#x442;&#x43c;&#x435;&#x442;&#x438;&#x442;&#x44c; &#x43d;&#x435;&#x434;&#x43e;&#x440;&#x430;&#x431;&#x43e;&#x442;&#x43a;&#x438; &#x434;&#x430;&#x43d;&#x43d;&#x43e;&#x439; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x44b;:&#xa;- &#x41d;&#x435;&#x43b;&#x44c;&#x437;&#x44f; &#x43c;&#x435;&#x43d;&#x44f;&#x442;&#x44c; &#x437;&#x430;&#x43f;&#x43e;&#x43b;&#x43d;&#x435;&#x43d;&#x43d;&#x44b;&#x435; &#x442;&#x430;&#x431;&#x43b;&#x438;&#x446;&#x44b; (&#x43d;&#x435; &#x43f;&#x440;&#x43e;&#x43f;&#x438;&#x441;&#x44b;&#x432;&#x430;&#x435;&#x442;&#x441;&#x44f; DEFAULT, &#x43f;&#x43e;&#x44d;&#x442;&#x43e;&#x43c;&#x443; &#x432;&#x441;&#x435; &#x43d;&#x43e;&#x432;&#x430;&#x44f; &#xa;&#x43a;&#x43e;&#x43b;&#x43e;&#x43d;&#x43a;&#x430; &#x441;&#x43e;&#x441;&#x442;&#x43e;&#x438;&#x442; &#x438;&#x437; null)&#xa;- &#x415;&#x441;&#x438;&#x43b; &#x432; &#x431;&#x430;&#x437;&#x435; &#x434;&#x430;&#x43d;&#x43d;&#x44b;&#x445; &#x431;&#x43e;&#x43b;&#x44c;&#x448;&#x435; 1 &#x441;&#x445;&#x435;&#x43c;&#x44b;, &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x430; &#x43f;&#x43e;&#x434;&#x442;&#x44f;&#x433;&#x438;&#x432;&#x430;&#x435;&#x442; &#x432;&#x441;&#x435; &#x442;&#x430;&#x431;&#x43b;&#x438;&#x446;&#x44b; &#x438; &#x43d;&#x435; &#x43c;&#x43e;&#x436;&#x435;&#x442; &#xa;&#x43a;&#x43e;&#x440;&#x440;&#x435;&#x43a;&#x442;&#x43d;&#x43e; &#x441; &#x43d;&#x438;&#x43c;&#x438; &#x440;&#x430;&#x431;&#x43e;&#x430;&#x442;&#x44c; (&#x441;&#x43e;&#x445;&#x440;&#x430;&#x43d;&#x435;&#x43d;&#x438;&#x435; &#x432;&#x44b;&#x434;&#x430;&#x435;&#x442; &#x43e;&#x448;&#x438;&#x431;&#x43a;&#x443;). &#x412; &#x43e;&#x441;&#x43d;&#x43e;&#x432;&#x43d;&#x43e;&#x43c; &#x440;&#x430;&#x431;&#x43e;&#x442;&#x430;&#x43b; &#x43d;&#x430; MySQL, &#xa;&#x43f;&#x43e;&#x44d;&#x442;&#x43e;&#x43c;&#x443; &#x437;&#x430;&#x431;&#x44b;&#x43b; &#x43f;&#x440;&#x43e; &#x43e;&#x441;&#x43e;&#x431;&#x435;&#x43d;&#x43d;&#x441;&#x43e;&#x442;&#x44c; &#x441;&#x442;&#x440;&#x443;&#x43a;&#x442;&#x443;&#x440;&#x44b; Postgresql &#xa;&#xa;&#x421;&#x434;&#x435;&#x43b;&#x430;&#x43b; &#x432;&#x44b;&#x431;&#x43e;&#x440; &#x437;&#x430;&#x43a;&#x43e;&#x43d;&#x447;&#x438;&#x442;&#x44c; &#x442;&#x435;&#x441;&#x442;&#x43e;&#x432;&#x43e;&#x435; &#x437;&#x430;&#x434;&#x430;&#x43d;&#x438;&#x435; &#x441; &#x43c;&#x438;&#x43d;&#x438;&#x43c;&#x430;&#x43b;&#x44c;&#x43d;&#x44b;&#x43c;&#x438; &#x438;&#x441;&#x43f;&#x440;&#x430;&#x432;&#x43b;&#x435;&#x43d;&#x438;&#x44f;&#x43c;&#x438; &#x441;&#x43f;&#x435;&#x446;&#x438;&#x444;&#x438;&#x447;&#x43d;&#x44b;&#x445; &#x441;&#x43b;&#x443;&#x447;&#x430;&#x435;&#x432; &#xa;&#x438; &#x441;&#x43e;&#x441;&#x440;&#x435;&#x434;&#x43e;&#x442;&#x43e;&#x447;&#x438;&#x442;&#x44c;&#x441;&#x44f; &#x43d;&#x430; &#x441;&#x440;&#x43e;&#x43a;&#x430;&#x445; &#x440;&#x430;&#x437;&#x440;&#x430;&#x431;&#x43e;&#x442;&#x43a;&#x438; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x44b;. &#x415;&#x441;&#x43b;&#x438; &#x432;&#x430;&#x43c; &#x43f;&#x43e;&#x43d;&#x440;&#x430;&#x432;&#x438;&#x43b;&#x441;&#x44f; &#x442;&#x435;&#x441;&#x442;&#x43e;&#x432;&#x44b;&#x439;&#xa;&#x432;&#x430;&#x440;&#x438;&#x430;&#x43d;&#x442;, &#x43d;&#x43e; &#x432;&#x44b; &#x445;&#x43e;&#x442;&#x438;&#x442;&#x435; &#x443;&#x432;&#x438;&#x434;&#x435;&#x442;&#x44c; &#x43f;&#x43e;&#x43b;&#x43d;&#x43e;&#x446;&#x435;&#x43d;&#x43d;&#x43e; &#x440;&#x430;&#x431;&#x43e;&#x442;&#x430;&#x44e;&#x449;&#x435;&#x435; &#x43f;&#x440;&#x438;&#x43b;&#x43e;&#x436;&#x435;&#x43d;&#x438;&#x435; &#x431;&#x435;&#x437; &#x43e;&#x43f;&#x438;&#x441;&#x430;&#x43d;&#x43d;&#x44b;&#x445; &#x432;&#x44b;&#x448;&#x435;&#xa;&#x43e;&#x448;&#x438;&#x431;&#x43e;&#x43a;, &#x442;&#x43e; &#x44f; &#x433;&#x43e;&#x442;&#x43e;&#x432; &#x434;&#x43e;&#x43e;&#x440;&#x430;&#x431;&#x43e;&#x430;&#x442;&#x44c; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x443; &#x434;&#x43e; &#x43a;&#x43e;&#x43d;&#x446;&#x430;.&#xa;&#x421;&#x43f;&#x430;&#x441;&#x438;&#x431;&#x43e; &#x437;&#x430; &#x432;&#x43d;&#x438;&#x43c;&#x430;&#x43d;&#x438;&#x435;!"/>
-                      </Properties>
-                    </Component>
-                  </SubComponents>
-                </Container>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JButton" name="updateTreeButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Update tree"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateTreeButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="extra update tree debug button"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="editTablePanel">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="33" green="ff" red="99" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
             </Property>
             <Property name="name" type="java.lang.String" value="" noResource="true"/>
           </Properties>
@@ -728,7 +716,7 @@
                           <Component id="pkColumnComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="pkColumnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="95" max="32767" attributes="0"/>
+                      <EmptySpace pref="91" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="createColumnButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="deleteColumnButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -752,27 +740,11 @@
                 <Component class="javax.swing.JTable" name="columnsTable">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="4" rowCount="3">
-                        <Column editable="false" title="Name" type="java.lang.String">
-                          <Data value="dsa"/>
-                          <Data value="asdasd"/>
-                          <Data value="asdasd"/>
-                        </Column>
-                        <Column editable="false" title="Type" type="java.lang.Object">
-                          <Data value="v"/>
-                          <Data value="i"/>
-                          <Data value="t"/>
-                        </Column>
-                        <Column editable="false" title="Size" type="java.lang.Integer">
-                          <Data value="233"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
-                        </Column>
-                        <Column editable="false" title="Nullable" type="java.lang.Boolean">
-                          <Data value="true"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
-                        </Column>
+                      <Table columnCount="4" rowCount="0">
+                        <Column editable="false" title="Name" type="java.lang.String"/>
+                        <Column editable="false" title="Type" type="java.lang.Object"/>
+                        <Column editable="false" title="Size" type="java.lang.Integer"/>
+                        <Column editable="false" title="Nullable" type="java.lang.Boolean"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -849,14 +821,12 @@
             <Component class="javax.swing.JComboBox" name="pkColumnComboBox">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="pkColumnComboBoxItemStateChanged"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
@@ -883,13 +853,5 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="updateTreeButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Update tree"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateTreeButtonActionPerformed"/>
-      </Events>
-    </Component>
   </SubComponents>
 </Form>

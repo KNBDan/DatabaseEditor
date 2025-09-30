@@ -20,4 +20,12 @@ public class ConnectionService {
         postgresConnection.updateConnection(url, user, password);
     }
 
+    public boolean isConnection() {
+        try {
+            return postgresConnection.getConnection() != null && !postgresConnection.getConnection().isClosed();
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
 }

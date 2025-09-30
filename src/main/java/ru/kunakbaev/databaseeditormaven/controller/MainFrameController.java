@@ -44,12 +44,20 @@ public class MainFrameController {
         return databaseService.findTable(name);
     }
 
-    public void setNewChangeModel(String tableName) {
-        changeService.newChangeModel(tableName);  //ChangeLog create
+    public void setNewChangeModel(String tableName) throws SQLException {
+        changeService.newChangeModel(tableName);  //ChangeLog open table
     }
 
-    public void saveDeletedColumn(String columnName) {
-        changeService.deleteColumn(columnName); // ChangeLog Delete
+    public void setNewChangeModel() {
+        changeService.newChangeModel();  //ChangeLog create new table
+    }
+
+    public boolean isConnection(){
+        return connectionService.isConnection();
+    }
+
+    public void saveDeletedColumn(Column column) {
+        changeService.deleteColumn(column); // ChangeLog Delete
     }
 
     public void saveUpdatedColumn(Column oldColumn, Column column) {
@@ -57,11 +65,15 @@ public class MainFrameController {
     }
 
     public void saveNewColumn(Column column) {
-        changeService.createColumn(column); //ChangeLog saveNewColumn
+        changeService.createColumn(column); //ChangeLog Add
     }
 
     public void saveTable() throws SQLException {
-        saveChangeLogService.GetChange(changeService.getChanges());
+        saveChangeLogService.saveChange(changeService.getChanges());
+    }
+
+    public void deleteTable(String tableName) throws SQLException{
+        saveChangeLogService.deleteTable(tableName);
     }
 
     public List<String> getConInfo() {
@@ -70,6 +82,18 @@ public class MainFrameController {
 
     public void setConnection(String url, String user, String password) throws SQLException {
         connectionService.setConnection(url, user, password);
+    }
+
+    public String getPk() {
+        return changeService.getChanges().getNewPk();
+    }
+
+    public void setPk(String pk) {
+        changeService.getChanges().setNewPk(pk);
+    }
+
+    public void setNewTableName(String tableName) {
+        changeService.getChanges().setNewTableName(tableName);
     }
 
 }
