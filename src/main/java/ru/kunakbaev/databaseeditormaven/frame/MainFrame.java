@@ -94,6 +94,7 @@ public class MainFrame extends javax.swing.JFrame {
         infoP = new javax.swing.JScrollPane();
         infoText = new javax.swing.JTextArea();
         updateTreeButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         editTablePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         columnsTable = new javax.swing.JTable();
@@ -165,7 +166,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        columnTypeEditColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "float4" }));
+        columnTypeEditColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "double" }));
         columnTypeEditColumnComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 columnTypeEditColumnComboBoxItemStateChanged(evt);
@@ -266,7 +267,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        columnTypeCreateColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "float4" }));
+        columnTypeCreateColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "double" }));
         columnTypeCreateColumnComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 columnTypeCreateColumnComboBoxItemStateChanged(evt);
@@ -432,16 +433,22 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("extra update tree debug button");
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(infoP, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(updateTreeButton)
-                    .addComponent(infoLabel))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(updateTreeButton))
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(infoP, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(infoLabel)))
                 .addContainerGap(93, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
@@ -450,7 +457,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addComponent(infoLabel)
                 .addGap(18, 18, 18)
-                .addComponent(updateTreeButton)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateTreeButton)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(infoP, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(10, Short.MAX_VALUE))
@@ -458,14 +467,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         editPanel.add(mainPanel, "MAIN_PANEL");
 
-        editTablePanel.setBackground(new java.awt.Color(153, 255, 51));
+        editTablePanel.setBackground(new java.awt.Color(255, 255, 255));
+        editTablePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         editTablePanel.setName(""); // NOI18N
 
         columnsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"dsa", "v",  new Integer(233),  new Boolean(true)},
-                {"asdasd", "i", null, null},
-                {"asdasd", "t", null, null}
+
             },
             new String [] {
                 "Name", "Type", "Size", "Nullable"
@@ -588,7 +596,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(editTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pkColumnComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pkColumnLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addGroup(editTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createColumnButton)
                     .addComponent(deleteColumnButton)
@@ -601,16 +609,6 @@ public class MainFrame extends javax.swing.JFrame {
         editPanel.add(editTablePanel, "EDIT_TABLE");
 
         uppMenuBar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-//        pkColumnComboBox.addItemListener(new ItemListener() {
-//            @Override
-//            public void itemStateChanged(ItemEvent e) {
-//                if (e.getStateChange() == ItemEvent.SELECTED) {
-//                    Object selectedItem = e.getItem();
-//                    saveNewPk(selectedItem.toString());
-//                }
-//            }
-//        });
 
         connectionMenu.setText("Connection");
 
@@ -670,6 +668,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
+            isAnyColumnExists();
             saveTable();
             updateTree();
             showPanel("MAIN_PANEL");
@@ -683,6 +682,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteColumnButtonActionPerformed
 
     private void createTableMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTableMenuItemActionPerformed
+        if (!mainFrameController.isConnection()) {
+            return;
+        }
         showPanel("EDIT_TABLE");
         openCreatePanel();
     }//GEN-LAST:event_createTableMenuItemActionPerformed
@@ -761,6 +763,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void tryConnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tryConnectButtonActionPerformed
         saveNewConnection();
         updateTree();
+        showPanel("MAIN_PANEL");
     }//GEN-LAST:event_tryConnectButtonActionPerformed
 
     private void pkColumnComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_pkColumnComboBoxItemStateChanged
@@ -784,7 +787,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void openCreatePanel() {
-//        Table table = new Table("New table");
+
         setTableColumns();
         tableNameField.setText("New_table");
         updatePkColumnComboBoxModel();
@@ -876,6 +879,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
+    private void isAnyColumnExists() throws Exception {
+        if (columnsTable.getModel().getRowCount() <= 0) {
+            throw new Exception("You must add any column");
+        };
+    }
+
     private void dbTreeMouseReleased(java.awt.event.MouseEvent evt) {                                     
         if (evt.isPopupTrigger()) {
             TreePath path = dbTree.getPathForLocation(evt.getX(), evt.getY());
@@ -950,6 +959,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
 
             mainFrameController.deleteTable(table.getName());
+            updateTree();
+            showPanel("MAIN_PANEL");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
@@ -1298,6 +1309,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel infoLabel;
     private javax.swing.JScrollPane infoP;
     private javax.swing.JTextArea infoText;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel nameCreateColumnLabel;

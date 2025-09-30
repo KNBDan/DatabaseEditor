@@ -52,6 +52,10 @@ public class MainFrameController {
         changeService.newChangeModel();  //ChangeLog create new table
     }
 
+    public boolean isConnection(){
+        return connectionService.isConnection();
+    }
+
     public void saveDeletedColumn(Column column) {
         changeService.deleteColumn(column); // ChangeLog Delete
     }
