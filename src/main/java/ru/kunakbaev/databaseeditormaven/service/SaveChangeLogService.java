@@ -1,68 +1,83 @@
 package ru.kunakbaev.databaseeditormaven.service;
 
-import org.springframework.transaction.annotation.Transactional;
+import ru.kunakbaev.databaseeditormaven.configuration.PostgresConnection;
 import ru.kunakbaev.databaseeditormaven.model.Change;
 import ru.kunakbaev.databaseeditormaven.model.Column;
 import ru.kunakbaev.databaseeditormaven.model.UpdateColumn;
 import ru.kunakbaev.databaseeditormaven.repository.PostgresTableRepository;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public class SaveChangeLogService {
 
     private final PostgresTableRepository postgresTableRepository;
+    private final PostgresConnection postgresConnection;
 
-    public SaveChangeLogService(PostgresTableRepository postgresTableRepository) {
+    public SaveChangeLogService(PostgresTableRepository postgresTableRepository, PostgresConnection postgresConnection) {
         this.postgresTableRepository = postgresTableRepository;
+        this.postgresConnection = postgresConnection;
     }
 
     public void deleteTable(String tableName) throws SQLException {
-        postgresTableRepository.deleteTable(tableName);
+        postgresTableRepository.deleteTable(postgresConnection.getConnection(), tableName);
     }
 
-    @Transactional(rollbackFor = SQLException.class)
     public void saveChange(Change change) throws SQLException {
-        // update table name
-        var tableName = change.getOldTableName();
-
-        if (change.isNewTable()) {
-            // create new table
-            if (change.getNewTableName() != null) {
-                tableName = change.getNewTableName();
-            }
-            postgresTableRepository.createTable(tableName, change.getAddedColumns());
-            return;
-        } else {
-            if (!change.getNewTableName().equals(change.getOldTableName())) {
-                postgresTableRepository.updateTableName(change.getOldTableName(), change.getNewTableName());
-                tableName = change.getNewTableName();
-            }
-        }
-        //      unlink pk
+        Connection conn = postgresConnection.getConnection();
         try {
-            postgresTableRepository.deletePk(change.getOldTableName());
-        } catch (SQLException e) {
-            System.out.println("EXCEPTION PK DELETE: " + e);
-        }
-        //      delete
-        var deletedColumns = change.getDeletedColumns();
-        for (Column column : deletedColumns) {
-            postgresTableRepository.deleteColumn(tableName, column);
-        }
-        //      update
-        var modifiedColumns = change.getModifiedColumns();
-        for (UpdateColumn updateColumnModel : modifiedColumns) {
-            postgresTableRepository.updateColumn(tableName, updateColumnModel.getFirstCondition().getName(), updateColumnModel.getUpdatedCondition());
-        }
-        //      create
-        var addedColumns = change.getAddedColumns();
-        for (Column column : addedColumns) {
-            postgresTableRepository.addColumn(tableName, column);
-        }
+            conn.setAutoCommit(false);
 
-        //      link new p
-        var newPk = change.getNewPk();
-        postgresTableRepository.setPk(tableName, newPk);
+            var tableName = change.getOldTableName();
+
+            if (change.isNewTable()) {
+                if (change.getNewTableName() != null) {
+                    tableName = change.getNewTableName();
+                }
+                //  create new table
+                postgresTableRepository.createTable(conn, tableName, change.getAddedColumns());
+                conn.commit();
+                return;
+            } else {
+                //  delete old pk
+                postgresTableRepository.deletePk(conn, tableName);
+                if (!change.getNewTableName().equals(change.getOldTableName())) {
+                    //  update table name
+                    postgresTableRepository.updateTableName(conn, change.getOldTableName(), change.getNewTableName());
+                    tableName = change.getNewTableName();
+                }
+            }
+
+            //  delete clumns
+            var deletedColumns = change.getDeletedColumns();
+            for (Column column : deletedColumns) {
+                postgresTableRepository.deleteColumn(conn, tableName, column);
+            }
+
+            // update columns
+            var modifiedColumns = change.getModifiedColumns();
+            for (UpdateColumn updateColumnModel : modifiedColumns) {
+                postgresTableRepository.updateColumn(conn, tableName, updateColumnModel.getFirstCondition().getName(), updateColumnModel.getUpdatedCondition());
+            }
+
+            //  add columns
+            var addedColumns = change.getAddedColumns();
+            for (Column column : addedColumns) {
+                postgresTableRepository.addColumn(conn, tableName, column);
+            }
+
+            // set new pk
+            var newPk = change.getNewPk();
+            postgresTableRepository.setPk(conn, tableName, newPk);
+
+            conn.commit();
+
+        } catch (SQLException e) {
+            conn.rollback();
+            throw e;
+        } finally {
+            conn.setAutoCommit(true);
+        }
     }
 
 }

@@ -1265,8 +1265,8 @@ public class MainFrame extends javax.swing.JFrame {
                     DatabaseService databaseService = new DatabaseService(postgresConnection);
                     TreeService treeService = new TreeService(databaseService);
                     ChangeService changeService = new ChangeService();
-                    PostgresTableRepository postgresTableRepository = new PostgresTableRepository(postgresConnection);
-                    SaveChangeLogService saveChangeLogService = new SaveChangeLogService(postgresTableRepository);
+                    PostgresTableRepository postgresTableRepository = new PostgresTableRepository();
+                    SaveChangeLogService saveChangeLogService = new SaveChangeLogService(postgresTableRepository, postgresConnection);
                     ConnectionService connectionService = new ConnectionService(postgresConnection);
 
                     MainFrameController mainFrameController = new MainFrameController(treeService, databaseService, changeService, saveChangeLogService, connectionService);
