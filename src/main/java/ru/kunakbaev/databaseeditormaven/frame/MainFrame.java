@@ -166,7 +166,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        columnTypeEditColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "double" }));
+        columnTypeEditColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "float4" }));
         columnTypeEditColumnComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 columnTypeEditColumnComboBoxItemStateChanged(evt);
@@ -267,7 +267,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        columnTypeCreateColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "double" }));
+        columnTypeCreateColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "float4" }));
         columnTypeCreateColumnComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 columnTypeCreateColumnComboBoxItemStateChanged(evt);
