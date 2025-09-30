@@ -701,7 +701,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void applyEditColumnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyEditColumnButtonActionPerformed
         try {
             isSizeFieldEnable(columnTypeEditColumnComboBox, sizeEditColumnFormattedTextField);
-            isNameFieldEnable(columnNameEditColumnTextField);
+            isNameFieldEnable(columnNameEditColumnTextField, true);
             updateTableRow(columnsTable.getSelectedRow());
             editColumnDialog.dispose();
         } catch (Exception e) {
@@ -732,7 +732,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void createCreateColumnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCreateColumnButtonActionPerformed
         try {
             isSizeFieldEnable(columnTypeCreateColumnComboBox, sizeCreateColumnFormattedTextField);
-            isNameFieldEnable(columnNameCreateColumnTextField);
+            isNameFieldEnable(columnNameCreateColumnTextField, false);
             createNewColumn();
             createColumnDialog.dispose();
         } catch (Exception e) {
@@ -1175,12 +1175,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    private void isNameFieldEnable(JTextField textField) throws Exception {
+    private void isNameFieldEnable(JTextField textField, boolean isUpdate) throws Exception {
         var name = textField.getText();
         if (isPostgresAvailableName(name)) {
             throw new Exception("Wrong column name");
         }
-        if (isDuplicateName(name)) {
+        if (isDuplicateName(name, isUpdate)) {
             throw new Exception("Column with this name already exist");
         }
     }
@@ -1196,11 +1196,11 @@ public class MainFrame extends javax.swing.JFrame {
         return (name == null || name.isEmpty() || !name.matches("[a-zA-Z_][a-zA-Z0-9_]{0,62}"));
     }
 
-    private boolean isDuplicateName(String name) {
+    private boolean isDuplicateName(String name, boolean isUpdate) {
         DefaultTableModel model = (DefaultTableModel) columnsTable.getModel();
         var currentRow = columnsTable.getSelectedRow();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (i == currentRow) {
+            if (i == currentRow && isUpdate) {
                 continue;
             }
             String currentName = (String) model.getValueAt(i, 0);
