@@ -1,15 +1,17 @@
 package ru.kunakbaev.databaseeditormaven.configuration;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class PostgresConnection {
 
-        Connection conn;
+    Connection conn;
     private final DbConfigManager dbConfigManager;
 
     public PostgresConnection(DbConfigManager dbConfigManager) {

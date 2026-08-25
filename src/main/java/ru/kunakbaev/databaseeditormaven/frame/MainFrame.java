@@ -166,7 +166,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        columnTypeEditColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "float4" }));
+        columnTypeEditColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "double" }));
         columnTypeEditColumnComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 columnTypeEditColumnComboBoxItemStateChanged(evt);
@@ -267,7 +267,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        columnTypeCreateColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "float4" }));
+        columnTypeCreateColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "int4", "int8", "varchar", "bool", "timestamp", "double" }));
         columnTypeCreateColumnComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 columnTypeCreateColumnComboBoxItemStateChanged(evt);
@@ -423,10 +423,11 @@ public class MainFrame extends javax.swing.JFrame {
         infoText.setBackground(new java.awt.Color(234, 243, 242));
         infoText.setColumns(20);
         infoText.setRows(5);
-        infoText.setText("Тестовое задание на создание, удаление и редактирование таблиц. \n\nХотел бы отметить недоработки данной программы:\n- Нельзя менять заполненные таблицы (не прописывается DEFAULT, поэтому все новая \nколонка состоит из null)\n- Есил в базе данных больше 1 схемы, программа подтягивает все таблицы и не может \nкорректно с ними рабоать (сохранение выдает ошибку). В основном работал на MySQL, \nпоэтому забыл про особеннсоть структуры Postgresql \n\nСделал выбор закончить тестовое задание с минимальными исправлениями специфичных случаев \nи сосредоточиться на сроках разработки программы. Если вам понравился тестовый\nвариант, но вы хотите увидеть полноценно работающее приложение без описанных выше\nошибок, то я готов доорабоать программу до конца.\nСпасибо за внимание!");
+        infoText.setText("Приложение для создание, удаление и редактирование таблиц. \n\nХотел бы отметить недоработки данной программы:\n- Нельзя менять заполненные таблицы (не прописывается DEFAULT, поэтому все новая \nколонка состоит из null)\n- Есил в базе данных больше 1 схемы, программа подтягивает все таблицы и не может \nкорректно с ними рабоать (сохранение выдает ошибку). В основном работал на MySQL, \nпоэтому забыл про особеннсоть структуры Postgresql ))\n\n");
         infoP.setViewportView(infoText);
 
         updateTreeButton.setText("Update tree");
+        updateTreeButton.setEnabled(false);
         updateTreeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 updateTreeButtonActionPerformed(evt);
@@ -763,6 +764,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void tryConnectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tryConnectButtonActionPerformed
         saveNewConnection();
         updateTree();
+        updateTreeButton.setEnabled(true);
         showPanel("MAIN_PANEL");
     }//GEN-LAST:event_tryConnectButtonActionPerformed
 
@@ -1236,50 +1238,6 @@ public class MainFrame extends javax.swing.JFrame {
         return Boolean.parseBoolean(value.toString());
     }
 
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-
-                try {
-
-                    DbConfigManager dbConfigManager = new DbConfigManager();
-                    PostgresConnection postgresConnection = new PostgresConnection(dbConfigManager);
-
-                    DatabaseService databaseService = new DatabaseService(postgresConnection);
-                    TreeService treeService = new TreeService(databaseService);
-                    ChangeService changeService = new ChangeService();
-                    PostgresTableRepository postgresTableRepository = new PostgresTableRepository();
-                    SaveChangeLogService saveChangeLogService = new SaveChangeLogService(postgresTableRepository, postgresConnection);
-                    ConnectionService connectionService = new ConnectionService(postgresConnection);
-
-                    MainFrameController mainFrameController = new MainFrameController(treeService, databaseService, changeService, saveChangeLogService, connectionService);
-
-                    new MainFrame(mainFrameController).setVisible(true);
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel TableNameLabel;

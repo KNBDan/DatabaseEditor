@@ -1,12 +1,14 @@
 package ru.kunakbaev.databaseeditormaven.configuration;
 
+import org.springframework.stereotype.Component;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
+@Component
 public class DbConfigManager {
 
     private static final String CONFIG_FILE = "db-config.properties";

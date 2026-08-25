@@ -1,14 +1,11 @@
 package ru.kunakbaev.databaseeditormaven.service;
 
-import org.springframework.jdbc.support.DatabaseStartupValidator;
 import org.springframework.stereotype.Service;
 import ru.kunakbaev.databaseeditormaven.configuration.PostgresConnection;
 import ru.kunakbaev.databaseeditormaven.model.Column;
 import ru.kunakbaev.databaseeditormaven.model.Database;
 import ru.kunakbaev.databaseeditormaven.model.Table;
 
-import javax.xml.crypto.Data;
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,7 +1,7 @@
 package ru.kunakbaev.databaseeditormaven.service.ui;
 
+import org.springframework.stereotype.Service;
 import ru.kunakbaev.databaseeditormaven.model.Column;
-import ru.kunakbaev.databaseeditormaven.model.Database;
 import ru.kunakbaev.databaseeditormaven.model.Table;
 import ru.kunakbaev.databaseeditormaven.service.DatabaseService;
 
@@ -9,6 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.sql.SQLException;
 
+@Service
 public class TreeService {
 
     private final DatabaseService databaseService;
