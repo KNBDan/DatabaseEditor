@@ -1,6 +1,5 @@
 package ru.kunakbaev.databaseeditormaven.repository;
 
-import org.springframework.stereotype.Repository;
 import ru.kunakbaev.databaseeditormaven.model.Column;
 
 import java.sql.Connection;

@@ -1,5 +1,6 @@
 package ru.kunakbaev.databaseeditormaven.service;
 
+import org.springframework.stereotype.Service;
 import ru.kunakbaev.databaseeditormaven.configuration.PostgresConnection;
 import ru.kunakbaev.databaseeditormaven.model.Change;
 import ru.kunakbaev.databaseeditormaven.model.Column;
@@ -9,6 +10,7 @@ import ru.kunakbaev.databaseeditormaven.repository.PostgresTableRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Service
 public class SaveChangeLogService {
 
     private final PostgresTableRepository postgresTableRepository;

@@ -1,10 +1,12 @@
 package ru.kunakbaev.databaseeditormaven.service;
 
+import org.springframework.stereotype.Service;
 import ru.kunakbaev.databaseeditormaven.configuration.PostgresConnection;
 
 import java.sql.SQLException;
 import java.util.List;
 
+@Service
 public class ConnectionService {
     private final PostgresConnection postgresConnection;
 
